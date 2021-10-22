@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <title>Let's play Octopus Fun!</title>
+
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+    <script src="./index.js"></script>    
+  </head>
+
+  <body class="container">
+
+    <h1 class="page-header">Octopus Fun - A game inspired by Squid Game. (Testing on Reposten Testnet)</h1>
+
+    <div class="row">
+      <div>
+        <h3 class="sub-header">Set information</h3>
+        <form class="form-inline" role="form">
+          <div class="form-group">
+            <table>
+              <tr>
+                <td><label for="newInfo">Info:</label> </td>
+                <td>
+                  <input class="form-control" id="newInfo">
+                </td>                          
+              </tr>
+            </table>
+          </div>
+          <a href="#" onclick="registerSetInfo()" class="btn btn-primary">Set</a>
+        </form>
+      </div>
+    </div>    
+
+    <div class="row">
+      <div>
+        <h3 class="sub-header">(Testing) Get specific players aliveNFTs round count</h3>
+        <form class="form-inline" role="form">
+          <a href="#" onclick="registerGetInfo()" class="btn btn-primary">Get</a>
+          <div class="form-group">
+            <table>
+              <tr>
+                <td>Info:</td>
+                <td>
+                  <label id="lastInfo">
+                </td>                          
+              </tr>
+            </table>
+          </div>                
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <h3 class="sub-header">(Testing) Get specific players aliveNFTs round count</h3>
+        <form class="form-inline" role="form">
+          <a href="#" onclick="registerGetInfo2()" class="btn btn-primary">Get2</a>
+          <div class="form-group">
+            <table>
+              <tr>
+                <td>Info:</td>
+                <td>
+                  <label id="lastInfo2">
+                </td>                          
+              </tr>
+            </table>
+          </div>                
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <h3 class="sub-header">Mint an NFT</h3>
+        <form class="form-inline" role="form">
+          <a href="#" onclick="mint()" class="btn btn-primary">Mint</a>
+          <div class="form-group">
+            <table>
+              <tr>
+                <td>Info:</td>
+                <td>
+                  <label id="lastInfo3">
+                </td>                          
+              </tr>
+            </table>
+          </div>                
+        </form>
+      </div>
+    </div>
+
+  </body>
+</html>
