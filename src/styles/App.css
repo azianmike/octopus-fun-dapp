@@ -36,7 +36,7 @@
 .menu { 
   color: white; 
   display: flex; 
-  justify-content: right;
+  justify-content: center;
   padding: 20px;
   padding-bottom: 50px;
 }
@@ -47,6 +47,7 @@
 
 .top {
   justify-content: center;
+  align-items: center;
   width: 100%;
   margin: auto; 
   display: flex; 
@@ -62,9 +63,9 @@
   padding: 20px;
 }
 
-img {
-  width: 300px;
-  height: 300px;
+.squidTop {
+  width: 500px;
+  height: 500px;
 }
 
 .overview {
@@ -79,16 +80,31 @@ img {
 }
 
 .overviewCircle { 
+  margin-bottom: -50px;
+  z-index: 1;
   background-color: white;
-  border-radius: 80px;
-  height: 80px;
-  width: 80px;
+  border-radius: 200px;
+  border: 5px solid black; 
+  height: 200px;
+  width: 200px;
 }
 
 .overviewBox { 
+  border-radius: 20px;
+  border: 5px solid black;
+  padding: 60px;
   background: white; 
   margin: auto;
   width: 70%; 
+}
+
+.overviewInstructions {
+  text-align: left;
+}
+
+.overviewText {
+  text-align: left;
+  font-size: 25px;
 }
 
 .faq {
@@ -99,6 +115,7 @@ img {
 }
 
 .faqItem {
+  padding-top: 20px;
   color: white;
   text-align: left; 
 }
@@ -110,6 +127,11 @@ img {
 
 .faqAnswer { 
   font-size: 25px;
+}
+
+.symbols {
+  height: 30px;
+  width: auto;
 }
 
 .footer {
@@ -142,7 +164,7 @@ img {
 }
 
 .connect-wallet-button {
-  background: -webkit-linear-gradient(left, #60c657, #35aee2);
+  background: -webkit-linear-gradient(left, #8AD4EC 30%, #FF56A9 50%, #FFAA6C 60%);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
 }
