@@ -3,6 +3,7 @@ import twitterLogo from './assets/twitter-logo.svg';
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { ethers } from "ethers";
 import MyNFT from './utils/MyNFT.json';
+import Web3 from 'web3';
 
 // Constants
 const TWITTER_HANDLE = '__mikareyes';
@@ -22,7 +23,10 @@ const App = () => {
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
 
-  // OCTOPUS FUN: KEEP THIS
+  // const web3 = new Web3(window.ethereum);
+  // const connectedContract = web3.eth.Contract(MyNFT.abi, CONTRACT_ADDRESS);
+
+  /*----------------------WEB3 WALLET INITIALIZATION---------------------------*/
   const checkIfWalletIsConnected = async () => {
     /*
     * First make sure we have access to window.ethereum
@@ -57,7 +61,6 @@ const App = () => {
   /*
   * Implement your connectWallet method here
   */
-  // OCTOPUS FUN: KEEP THIS
   const connectWallet = async () => {
     try {
       const { ethereum } = window;
@@ -85,13 +88,10 @@ const App = () => {
 
    // Setup our listener.
   const setupEventListener = async () => {
-    // Most of this looks the same as our function askContractToMintNft
     try {
       const { ethereum } = window;
 
       if (ethereum) {
-        console.log("Inside setupEventListener, ethereum");
-        // Same stuff again
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         // Ethers is a library that helps our frontend talk to our contract. Provider is what we use to actually talk to ethereum nodes. We use nodes that Metamask provides
@@ -101,6 +101,7 @@ const App = () => {
         // THIS IS THE MAGIC SAUCE.
         // This will essentially "capture" our event when our contract throws it.
         // If you're familiar with webhooks, it's very similar to that!
+
         // connectedContract.on("NewEpicNFTMinted", (from, tokenId) => {
         //   console.log("From, tokenId", from, tokenId.toNumber());
         //   console.log("Inside connected contract WOOT WOOT");
@@ -117,42 +118,47 @@ const App = () => {
     }
   }
 
-  const setRound = () => {
-    console.log("CURRENT ROUND pre:", currentRound)
-    var dateRound1 = new Date('2021-10-20T10:00:00');
-    var dateRound2 = new Date('2021-10-22T10:00:00');
-    var dateRound3 = new Date('2021-10-23T10:00:00');
-    var dateRound4 = new Date('2021-10-24T10:00:00');
-    var dateRound5 = new Date('2021-10-25T10:00:00');
-    var dateRound6 = new Date('2021-10-26T10:00:00');
-    var endDate = new Date('2021-10-27T10:00:00')
-    var dateNow = new Date('2021-10-23T11:00:00');
-    if (dateNow >= dateRound1 && dateNow < dateRound2) {
-      console.log("CURRENT NOW", dateNow); 
-      console.log("DATEROUND1", dateRound1);
-      console.log("TRUE OR FALSE", dateNow > dateRound1);
-      setCurrentRound(1);
-    }
-    else if (dateNow >= dateRound2 && dateNow < dateRound3) {
-      setCurrentRound(2);
-    }
-    else if (dateNow >= dateRound3 && dateNow <dateRound4) {
-      setCurrentRound(3);
-    }
-    else if (dateNow >= dateRound4 && dateNow <dateRound5) {
-      setCurrentRound(4);
-    }
-    else if (dateNow >= dateRound5 && dateNow <dateRound6) {
-      setCurrentRound(5);
-    }
-    else if (dateNow >= dateRound6 && dateNow <endDate) {
-      setCurrentRound(6);
-    }
-    else { 
-      setCurrentRound(0);
-    }
-  } 
+/*----------------------MINT---------------------------*/
+  const askContractToMintNft = useCallback(async () => {
+    // This function doesn't yet work
+    try {
+      const { ethereum } = window;
 
+      if (ethereum) {
+        const amountToSend = 100000000000000000;
+        console.log("amount to send", amountToSend);
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
+        console.log("connectedcontract", connectedContract)
+        console.log("Going to pop wallet now to pay gas...")
+        
+        // This is what calls our connected contract
+        let nftTxn = await connectedContract.mintNFT(currentAccount, "sending money to mint")
+
+        // console.log("Mining...please wait.")
+        // await nftTxn.wait();
+
+        // console.log(`Mined, see transaction: https://ropsten.etherscan.io/tx/${nftTxn.hash}`);
+
+        // const web3 = new Web3(ethereum);
+        // const id = await web3.eth.net.getId();
+        // const deployedNetwork = MyNFT.networks[id];
+        // const contract = new web3.eth.Contract(MyNFT, deployedNetwork.address);
+        // const addresses = await web3.eth.getAccounts();
+        // await contract.methods.sendEther().send({from:currentAccount, value:amountToSend})
+
+        // getMints();
+
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  })
+
+  /*----------------------MINT SUPPLY & CURRENT---------------------------*/
  // OCTOPUS FUN: KEEP THIS
   /* Get current number of mints*/
   const getMints = useCallback(async () => {
@@ -198,6 +204,44 @@ const App = () => {
   //   // Returns current round - use same logic from mint supply
   // }
 
+  /*----------------------SET & PLAY ROUNDS---------------------------*/
+
+  const setRound = () => {
+    console.log("CURRENT ROUND pre:", currentRound)
+    var dateRound1 = new Date('2021-10-20T10:00:00');
+    var dateRound2 = new Date('2021-10-22T10:00:00');
+    var dateRound3 = new Date('2021-10-23T10:00:00');
+    var dateRound4 = new Date('2021-10-24T10:00:00');
+    var dateRound5 = new Date('2021-10-25T10:00:00');
+    var dateRound6 = new Date('2021-10-26T10:00:00');
+    var endDate = new Date('2021-10-27T10:00:00')
+    var dateNow = new Date('2021-10-23T11:00:00');
+    if (dateNow >= dateRound1 && dateNow < dateRound2) {
+      console.log("CURRENT NOW", dateNow); 
+      console.log("DATEROUND1", dateRound1);
+      console.log("TRUE OR FALSE", dateNow > dateRound1);
+      setCurrentRound(1);
+    }
+    else if (dateNow >= dateRound2 && dateNow < dateRound3) {
+      setCurrentRound(2);
+    }
+    else if (dateNow >= dateRound3 && dateNow <dateRound4) {
+      setCurrentRound(3);
+    }
+    else if (dateNow >= dateRound4 && dateNow <dateRound5) {
+      setCurrentRound(4);
+    }
+    else if (dateNow >= dateRound5 && dateNow <dateRound6) {
+      setCurrentRound(5);
+    }
+    else if (dateNow >= dateRound6 && dateNow <endDate) {
+      setCurrentRound(6);
+    }
+    else { 
+      setCurrentRound(0);
+    }
+  } 
+
   const playRound = () => {
     try {
       const { ethereum } = window;
@@ -236,6 +280,8 @@ const App = () => {
       console.log(error)
     }
   }
+
+  /*----------------------TIMER---------------------------*/
 
   const afterCountdownTimer = () => {
     var mintTimer = new Date(MINT_DATE);
@@ -306,51 +352,14 @@ const App = () => {
       return mintTimer;
   }
 
-  // We can use useEffect so that when the component
-  // mount the timer will start as soon as possible
-
-  // We put empty array to act as componentDid
-  // mount only
-  useEffect(() => {
-      clearTimer(getDeadTime());
-  }, []);
-
-  // OCTOPUS FUN: KEEP THIS
-  const askContractToMintNft = async () => {
-    try {
-      const { ethereum } = window;
-
-      if (ethereum) {
-        const amountToSend = 100000000000000000;
-        console.log("entered")
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        console.log("provider")
-        const signer = provider.getSigner();
-        console.log("signer")
-        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
-        console.log("connectedcontract")
-        console.log("Going to pop wallet now to pay gas...")
-        
-        // This is what calls our connected contract
-        let nftTxn = await connectedContract.mintNFT(currentAccount, amountToSend);
-
-        console.log("Mining...please wait.")
-        await nftTxn.wait();
-        
-        console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`);
-
-        // getMints();
-
-      } else {
-        console.log("Ethereum object doesn't exist!");
-      }
-    } catch (error) {
-      console.log(error)
-    }
-}
   /*
   * This runs our function when the page loads.
   */
+
+  useEffect(() => {
+    clearTimer(getDeadTime());
+  }, []);
+
   useEffect(() => {
     checkIfWalletIsConnected();
   }, [])
