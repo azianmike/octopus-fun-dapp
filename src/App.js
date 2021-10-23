@@ -3,6 +3,7 @@ import twitterLogo from './assets/twitter-logo.svg';
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { ethers } from "ethers";
 import MyNFT from './utils/MyNFT.json';
+import IPFS from './utils/ipfs.json';
 import Web3 from 'web3';
 
 // Constants
