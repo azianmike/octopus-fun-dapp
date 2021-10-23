@@ -9,7 +9,7 @@ const TWITTER_HANDLE = '__mikareyes';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
-const CONTRACT_ADDRESS = "0x8eaBB76B750E0eAb8AE24808248d27c6c11c5bC6"; // Change Address
+const CONTRACT_ADDRESS = "0xC5a51c08A09aF92C816bA32786397C4008d937f6"; // Change Address
 const MINT_DATE = "2021-10-24T19:00:00";
 
 const App = () => {
@@ -95,17 +95,17 @@ const App = () => {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         // Ethers is a library that helps our frontend talk to our contract. Provider is what we use to actually talk to ethereum nodes. We use nodes that Metamask provides
-        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
+        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
         // The above line is what actually creates the connection to contract; neesd abi and signer
-        console.log(connectedContract);
+        console.log("Connected Contract", connectedContract);
         // THIS IS THE MAGIC SAUCE.
         // This will essentially "capture" our event when our contract throws it.
         // If you're familiar with webhooks, it's very similar to that!
-        connectedContract.on("NewEpicNFTMinted", (from, tokenId) => {
-          console.log("From, tokenId", from, tokenId.toNumber());
-          console.log("Inside connected contract WOOT WOOT");
-          alert(`Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`)
-        });
+        // connectedContract.on("NewEpicNFTMinted", (from, tokenId) => {
+        //   console.log("From, tokenId", from, tokenId.toNumber());
+        //   console.log("Inside connected contract WOOT WOOT");
+        //   alert(`Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`)
+        // });
 
         console.log("Setup event listener!")
 
@@ -125,19 +125,32 @@ const App = () => {
     var dateRound4 = new Date('2021-10-24T10:00:00');
     var dateRound5 = new Date('2021-10-25T10:00:00');
     var dateRound6 = new Date('2021-10-26T10:00:00');
-    var dateNow = new Date().getTime();
-
-    if (dateNow > dateRound1) {
+    var endDate = new Date('2021-10-27T10:00:00')
+    var dateNow = new Date('2021-10-23T11:00:00');
+    if (dateNow >= dateRound1 && dateNow < dateRound2) {
+      console.log("CURRENT NOW", dateNow); 
+      console.log("DATEROUND1", dateRound1);
+      console.log("TRUE OR FALSE", dateNow > dateRound1);
       setCurrentRound(1);
     }
-    else if (dateNow > dateRound2) {
+    else if (dateNow >= dateRound2 && dateNow < dateRound3) {
       setCurrentRound(2);
     }
-    else if (dateNow > dateRound3) {
+    else if (dateNow >= dateRound3 && dateNow <dateRound4) {
       setCurrentRound(3);
     }
-    console.log("CURRENT ROUND post:", currentRound)
-    // use currentRound results to render specific functions from contract
+    else if (dateNow >= dateRound4 && dateNow <dateRound5) {
+      setCurrentRound(4);
+    }
+    else if (dateNow >= dateRound5 && dateNow <dateRound6) {
+      setCurrentRound(5);
+    }
+    else if (dateNow >= dateRound6 && dateNow <endDate) {
+      setCurrentRound(6);
+    }
+    else { 
+      setCurrentRound(0);
+    }
   } 
 
  // OCTOPUS FUN: KEEP THIS
@@ -146,10 +159,11 @@ const App = () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
+        console.log("ETHEREUM READY TO MINT")
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
-        const currentMints = await connectedContract.getCurrentMints(); 
+        const currentMints = await connectedContract.mint(); 
         setCurrentMints(currentMints.toNumber());
       } 
     } catch (error) {
@@ -185,18 +199,45 @@ const App = () => {
   // }
 
   const playRound = () => {
-    // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
-    if (currentRound=1) {
-      // const playRound1 = await connectedContract.playRound1();
+    try {
+      const { ethereum } = window;
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
+        console.log("Connected Contract", connectedContract);
+        if (currentRound===1) {
+          console.log("WE ENTEREED CURRENT ROUND 1", currentRound);
+          // const playRound1 = await connectedContract.playRound1();
+        }
+        else if (currentRound===2) {
+          console.log("currentRound",currentRound);
+        }
+        else if (currentRound===3) {
+          console.log("currentRound",currentRound);
+        }
+        else if (currentRound===4) {
+          console.log("currentRound",currentRound);
+        }
+        else if (currentRound===5) {
+          console.log("curretnRound",currentRound);
+        }
+        else if (currentRound===6) {
+          console.log("curretnRound",currentRound);
+        }
+        // For the "play round" button
+        // Assuming the player has the existing NFT AND is alive to see the "Play Round" button AND after the game is open AND the current round is open 
+
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error)
     }
-    // For the "play round" button
-    // Assuming the player has the existing NFT AND is alive to see the "Play Round" button AND after the game is open AND the current round is open 
   }
 
   const afterCountdownTimer = () => {
-    /// CHARLES -> COUNTDOWN TIMER LOGIC
-    // if (countdown time > 0) -> set as FALSE to hide the "time to play" secion
-    // if (countdown time < 0) -> set as TRUE to show the "time to play"
     var mintTimer = new Date(MINT_DATE);
     var now = new Date().getTime();
     var timeleft = mintTimer - now;
@@ -280,20 +321,25 @@ const App = () => {
       const { ethereum } = window;
 
       if (ethereum) {
+        const amountToSend = 100000000000000000;
+        console.log("entered")
         const provider = new ethers.providers.Web3Provider(ethereum);
+        console.log("provider")
         const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
+        console.log("signer")
+        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
+        console.log("connectedcontract")
         console.log("Going to pop wallet now to pay gas...")
         
         // This is what calls our connected contract
-        let nftTxn = await connectedContract.makeAnEpicNFT();
+        let nftTxn = await connectedContract.mintNFT(currentAccount, amountToSend);
 
         console.log("Mining...please wait.")
         await nftTxn.wait();
         
         console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`);
 
-        getMints();
+        // getMints();
 
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -317,13 +363,13 @@ const App = () => {
     afterCountdownTimer();
   }, [])
 
-  useEffect(() => {
-    getTotalPlayers()
-  }, [getTotalPlayers])
+  // useEffect(() => {
+  //   getTotalPlayers()
+  // }, [getTotalPlayers])
 
-  useEffect(() => {
-    getMints()
-  }, [getMints])
+  // useEffect(() => {
+  //   getMints()
+  // }, [getMints])
 
 
   // Render Methods
@@ -341,7 +387,8 @@ const App = () => {
 
   const renderPlayGame = () => (
     <div className="body-container">
-          <p className="header gradient-text"> Time to play </p> 
+        <p className="header gradient-text"> Time to play </p> 
+        <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
     </div> 
   )
 
