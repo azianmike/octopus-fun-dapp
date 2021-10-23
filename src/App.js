@@ -17,7 +17,7 @@ const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 var img_file;
 
-const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
+const MINT_DATE = new Date("2021-10-24T19:00:00").getTime();
 var dateRound1 = new Date('2021-10-26T10:00:00').getTime();
 var dateRound2 = new Date('2021-10-27T10:00:00').getTime();
 var dateRound3 = new Date('2021-10-28T10:00:00').getTime();
@@ -54,7 +54,7 @@ const App = () => {
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
   const [hasNFT, setNFT] = useState(false);
-  const [timer, setTimer] = useState('00d 00h 00m 00s');
+  const [timer, setTimer] = useState("loading");
 
   // const img_file = useState();
 
@@ -412,6 +412,26 @@ const App = () => {
     img_file = " https://gateway.pinata.cloud/ipfs/QmWy46X5QpVA4DEVtPebddD4cBmKvCES1um6yCo1G7PuKE";
   }
 
+  // function renderContent() {
+  //   if (gameOpen) {
+  //     if (currentAccount) {
+  //       return renderPlayGame();
+  //     } else {
+  //       return renderNotConnectedContainer();
+  //     }
+  //   } else {
+  //     if (currentAccount) {
+  //       if (hasNFT) {
+  //         return renderNoMintUI();
+  //       } else {
+  //         return renderMintUI();
+  //       }
+  //     } else {
+  //       return renderNotConnectedContainer();
+  //     }
+  //   }
+  // }
+
   useEffect(() => {
     setImage();
   }, [])
@@ -475,11 +495,16 @@ const App = () => {
     }
   }
 
+  let timerClass = "timer"
+  if (timer === "loading") {
+    timerClass = "timer timer-invisible"
+  }
+
   return (
     <div className="App">
       <div className="container">
         
-          <div className="menu"> 
+          <div className="menu">
             <div className="menuItems">About</div>
             <div className="menuItems">FAQ</div>
             <div className="menuItems">Connect Wallet</div>
@@ -490,7 +515,7 @@ const App = () => {
             </div>
             <div className="topRight">
               <p className="header gradient-text">Octopus Game</p>
-              <p className="timer">{timer}</p>
+              <p className={timerClass}>{timer}</p>
               <p className="sub-text">456 Octopi. 6 Rounds. 1 Massive Prize. Will you survive?</p>
               <div> 
                 {renderContent()}
