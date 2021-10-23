@@ -23,10 +23,12 @@ const App = () => {
     * Just a state variable we use to store our user's public wallet. Don't forget to import useState.
     */
   const [currentAccount, setCurrentAccount] = useState("");
-  const [gameOpen, setGameOpen] = useState("false");
+  const [gameOpen, setGameOpen] = useState(false);
   const [totalPlayers, setTotalPlayers] = useState();
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
+  const [hasNFT, setNFT] = useState(false);
+
   // const img_file = useState();
 
   // const web3 = new Web3(window.ethereum);
@@ -151,7 +153,9 @@ const App = () => {
         // const deployedNetwork = MyNFT.networks[id];
         const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
         const addresses = await web3.eth.getAccounts();
-        contract.methods.mintNFT(currentAccount, "testing Web3!").send({from:currentAccount, value:amountToSend}).then( function( info ) { 
+        var ipfs_uri = IPFS[currentMints];
+        console.log(ipfs_uri);
+        contract.methods.mintNFT(currentAccount, ipfs_uri).send({from:currentAccount, value:amountToSend}).then( function( info ) { 
           console.log("mint info: ", info);
           console.log("token ID is ", info.events.Transfer.returnValues.tokenId);
         });    
@@ -173,12 +177,20 @@ const App = () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
-        console.log("ETHEREUM READY TO MINT")
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
-        const currentMints = await connectedContract.mint(); 
-        setCurrentMints(currentMints.toNumber());
+        console.log("ETHEREUM READY TO MINT");
+        const web3 = new Web3(ethereum);
+        const id = await web3.eth.net.getId();
+        // const deployedNetwork = MyNFT.networks[id];
+        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+        const addresses = await web3.eth.getAccounts();
+        const currentMints = await contract.methods.aliveNFTCount().call();
+        // const provider = new ethers.providers.Web3Provider(ethereum);
+        // const signer = provider.getSigner();
+        // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
+        // console.log(connectedContract);
+        // const currentMints = await connectedContract.aliveNFTCount(); 
+        console.log(currentMints);
+        setCurrentMints(currentMints);
       } 
     } catch (error) {
     console.log(error)
@@ -187,20 +199,9 @@ const App = () => {
 
   // OCTOPUS FUN: KEEP THIS
   /* Gets total mint supply */ 
-  const getTotalPlayers = useCallback(async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
-        const totalPlayers = await connectedContract.getMaxTotalSupply();
-        setTotalPlayers(totalPlayers.toNumber());
-      } 
-    } catch (error) {
-    console.log(error)
-    }
-  }, [setTotalPlayers]);
+  const getTotalPlayers = () => {
+    setTotalPlayers(456);
+  }
 
   /* List of pending functions to connect based on smart contract */ 
 
@@ -394,9 +395,9 @@ const App = () => {
     afterCountdownTimer();
   }, [])
 
-  // useEffect(() => {
-  //   getTotalPlayers()
-  // }, [getTotalPlayers])
+  useEffect(() => {
+    getTotalPlayers()
+  }, [getTotalPlayers])
 
   useEffect(() => {
     getMints()
@@ -434,6 +435,16 @@ const App = () => {
     </div>
   )
 
+  const renderNoMintUI = () => (
+    <div className="mintUI">
+      <button className="cta-button no-mint">
+        You have an octopus
+      </button>
+      <br></br>
+      <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+    </div>
+  )
+
   const renderPlayGame = () => (
     <div className="body-container">
         <p className="header gradient-text"> Time to play </p> 
@@ -446,11 +457,16 @@ const App = () => {
     if (gameOpen) {
       if (currentAccount) {
         return renderPlayGame();
+      } else {
+        return renderNotConnectedContainer();
       }
-      return renderNotConnectedContainer();
     } else {
       if (currentAccount) {
-        return renderMintUI();
+        if (hasNFT) {
+          return renderNoMintUI();
+        } else {
+          return renderMintUI();
+        }
       } else {
         return renderNotConnectedContainer();
       }
