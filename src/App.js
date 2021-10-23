@@ -220,7 +220,7 @@ const App = () => {
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
         const hours = Math.floor((total / 1000 * 60 * 60) % 24);
-        const days = Math.floor(total / 1000 * 60 * 60 * 24);
+        const days = Math.floor(total / (1000 * 60 * 60 * 24));
         return {
             total, days, hours, minutes, seconds
     };
@@ -247,7 +247,7 @@ const App = () => {
     // If you adjust it you should also need to
     // adjust the Endtime formula we are about
     // to code next    
-    setTimer('');
+    setTimer('02 Days 00 Hours 32 Minutes 55 Seconds');
 
     // If you try to remove this line the 
     // updating of timer Variable will be
@@ -353,7 +353,7 @@ const App = () => {
           <p className="sub-text">
             Time for your unique coffee of the day.
           </p>
-          <h2>{timer}</h2>
+          <h2 className="timer">{timer}</h2>
         </div>
         <div> 
           {currentAccount === "" ? renderNotConnectedContainer() : renderMintUI()}
