@@ -14,11 +14,37 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
 const CONTRACT_ADDRESS = "0xC5a51c08A09aF92C816bA32786397C4008d937f6"; // Change Address
-const MINT_DATE = "2021-10-22T19:00:00";
 
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 var img_file;
+
+const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
+var dateRound1 = new Date('2021-10-26T10:00:00').getTime();
+var dateRound2 = new Date('2021-10-27T10:00:00').getTime();
+var dateRound3 = new Date('2021-10-28T10:00:00').getTime();
+var dateRound4 = new Date('2021-10-29T10:00:00').getTime();
+var dateRound5 = new Date('2021-10-30T10:00:00').getTime();
+var dateRound6 = new Date('2021-10-31T10:00:00').getTime();
+var dateNow = new Date().getTime();
+
+const getDeadTime = (currentRound) => {
+    var mintTimer = MINT_DATE;
+    if (currentRound == 1) {
+      mintTimer = dateRound1;
+    } else if (currentRound == 2) {
+      mintTimer = dateRound2;
+    } else if (currentRound == 3) {
+      mintTimer = dateRound3;
+    } else if (currentRound == 4) {
+      mintTimer = dateRound4;
+    } else if (currentRound == 5) {
+      mintTimer = dateRound5;
+    } else if (currentRound == 6) {
+      mintTimer = dateRound6;
+    }
+    return mintTimer;
+}
 
 const App = () => {
   /*
@@ -30,6 +56,7 @@ const App = () => {
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
   const [hasNFT, setNFT] = useState(false);
+  const [timer, setTimer] = useState('00d 00h 00m 00s');
 
   // const img_file = useState();
 
@@ -215,43 +242,40 @@ const App = () => {
   //   // Returns current round - use same logic from mint supply
   // }
 
-  /*----------------------SET & PLAY ROUNDS---------------------------*/
+  /*----------------------SET ROUND---------------------------*/
 
   const setRound = () => {
-    var dateRound1 = new Date('2021-10-20T10:00:00');
-    var dateRound2 = new Date('2021-10-22T10:00:00');
-    var dateRound3 = new Date('2021-10-23T10:00:00');
-    var dateRound4 = new Date('2021-10-24T10:00:00');
-    var dateRound5 = new Date('2021-10-25T10:00:00');
-    var dateRound6 = new Date('2021-10-26T10:00:00');
-    var endDate = new Date('2021-10-27T10:00:00')
-    var dateNow = new Date('2021-10-23T11:00:00');
-    if (dateNow >= dateRound1 && dateNow < dateRound2) {
-      console.log("CURRENT NOW", dateNow); 
-      console.log("DATEROUND1", dateRound1);
-      console.log("TRUE OR FALSE", dateNow > dateRound1);
+    if (dateNow >= MINT_DATE && dateNow < dateRound1) {
+      console.log("set round 1");
       setCurrentRound(1);
     }
-    else if (dateNow >= dateRound2 && dateNow < dateRound3) {
+    else if (dateNow >= dateRound1 && dateNow < dateRound2) {
+      console.log("set round 2");
       setCurrentRound(2);
     }
-    else if (dateNow >= dateRound3 && dateNow <dateRound4) {
+    else if (dateNow >= dateRound2 && dateNow <dateRound3) {
+      console.log("set round 3");
       setCurrentRound(3);
     }
-    else if (dateNow >= dateRound4 && dateNow <dateRound5) {
+    else if (dateNow >= dateRound3 && dateNow <dateRound4) {
+      console.log("set round 4");
       setCurrentRound(4);
     }
-    else if (dateNow >= dateRound5 && dateNow <dateRound6) {
+    else if (dateNow >= dateRound4 && dateNow <dateRound5) {
+      console.log("set round 5");
       setCurrentRound(5);
     }
-    else if (dateNow >= dateRound6 && dateNow <endDate) {
+    else if (dateNow >= dateRound5 && dateNow <dateRound6) {
+      console.log("set round 6");
       setCurrentRound(6);
     }
     else { 
+      console.log("set round 0");
       setCurrentRound(0);
     }
   } 
 
+  /*----------------------PLAY ROUND---------------------------*/
   const playRound = () => {
     console.log("inside play round");
     try {
@@ -306,10 +330,10 @@ const App = () => {
     }
   }
 
-  /*----------------------TIMER---------------------------*/
+  /*----------------------MINT TIMER---------------------------*/
 
-  const afterCountdownTimer = () => {
-    var mintTimer = new Date(MINT_DATE);
+  const haveWeMinted = () => {
+    var mintTimer = MINT_DATE;
     var now = new Date().getTime();
     var timeleft = mintTimer - now;
     if (timeleft > 0) {
@@ -324,14 +348,11 @@ const App = () => {
   // stop it when needed
   const Ref = useRef(null);
 
-  // The state for our timer
-  const [timer, setTimer] = useState();
-
   const getTimeRemaining = (e) => {
-        const total = Date.parse(e) - Date.parse(new Date());
+        const total = e - (new Date().getTime());
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
-        const hours = Math.floor((total / 1000 * 60 * 60) % 24);
+        const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
         const days = Math.floor(total / (1000 * 60 * 60 * 24));
         return {
             total, days, hours, minutes, seconds
@@ -342,7 +363,6 @@ const App = () => {
     let { total, days, hours, minutes, seconds } 
                 = getTimeRemaining(e);
     if (total >= 0) {
-
         // update the timer
         // check if less than 10 then we need to 
         // add '0' at the begining of the variable
@@ -359,8 +379,6 @@ const App = () => {
     // If you adjust it you should also need to
     // adjust the Endtime formula we are about
     // to code next    
-    setTimer('00d 00h 00m 00s');
-
     // If you try to remove this line the 
     // updating of timer Variable will be
     // after 1000ms or 1sec
@@ -371,31 +389,16 @@ const App = () => {
     Ref.current = id;
   }
 
-  const getDeadTime = () => {
-      var mintTimer = new Date(MINT_DATE);
-
-      return mintTimer;
-  }
-
   /*
   * This runs our function when the page loads.
   */
 
   useEffect(() => {
-    clearTimer(getDeadTime());
-  }, []);
-
-  useEffect(() => {
     checkIfWalletIsConnected();
-  }, [])
-
-  useEffect(() => {
     setRound();
-  }, [])
-
-  useEffect(() => {
-    afterCountdownTimer();
-  }, [])
+    haveWeMinted();
+    clearTimer(getDeadTime(currentRound));
+  }, [currentRound, clearTimer])
 
   useEffect(() => {
     getTotalPlayers()
@@ -404,7 +407,6 @@ const App = () => {
   useEffect(() => {
     getMints()
   }, [getMints])
-
 
   // Set up Image
   const setImage = () => {
