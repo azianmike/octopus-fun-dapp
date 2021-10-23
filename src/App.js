@@ -11,7 +11,7 @@ const TWITTER_HANDLE = '__mikareyes';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
-const CONTRACT_ADDRESS = "0xC5a51c08A09aF92C816bA32786397C4008d937f6"; // Change Address
+const CONTRACT_ADDRESS = "0x8dD2be632a4c6fb2C0C7650a185AC0aeFe06CAEd"; // Change Address
 
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
