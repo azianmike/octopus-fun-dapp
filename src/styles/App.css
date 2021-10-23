@@ -24,16 +24,105 @@
 }
 
 .sub-text {
-  font-size: 25px;
+  font-size: 20px;
   color: white;
 }
 
 .timer {
+  font-size: 25px; 
   color:  white;
 }
 
+.menu { 
+  color: white; 
+  display: flex; 
+  justify-content: right;
+  padding: 20px;
+  padding-bottom: 50px;
+}
+
+.menuItems {
+  margin: 20px; 
+}
+
+.top {
+  justify-content: center;
+  width: 100%;
+  margin: auto; 
+  display: flex; 
+  flex-direction: row;
+}
+
+.topRight {
+  text-align: left;
+  padding: 20px;
+}
+
+.topLeft {
+  padding: 20px;
+}
+
+img {
+  width: 300px;
+  height: 300px;
+}
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+  margin-bottom: 100px; 
+  padding-top: 100px;
+  padding-bottom: 100px; 
+  background: -webkit-linear-gradient(left, #8AD4EC 30%, #FF56A9 50%, #FFAA6C 60%);
+}
+
+.overviewCircle { 
+  background-color: white;
+  border-radius: 80px;
+  height: 80px;
+  width: 80px;
+}
+
+.overviewBox { 
+  background: white; 
+  margin: auto;
+  width: 70%; 
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 70%; 
+}
+
+.faqItem {
+  color: white;
+  text-align: left; 
+}
+
+.faqQuestion { 
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.faqAnswer { 
+  font-size: 25px;
+}
+
+.footer {
+  color: white; 
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 70%; 
+  padding-top: 100px;
+}
+
 .gradient-text {
-  background: -webkit-linear-gradient(left, #60c657 30%, #35aee2 60%);
+  background: -webkit-linear-gradient(left, #8AD4EC 30%, #FF56A9 50%, #FFAA6C 60%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -126,14 +215,4 @@
   100% {
     background-position: 0% 50%;
   }
-}
-
-.box {
-  width: 30%;
-  margin: auto;
-}
-
-img {
-  width: 100%;
-  height: 100%;
 }

@@ -344,10 +344,10 @@ const App = () => {
         // check if less than 10 then we need to 
         // add '0' at the begining of the variable
         setTimer(
-            (days > 9 ? days : '0' + days) + ' Days ' +
-            (hours > 9 ? hours : '0' + hours) + ' Hours ' +
-            (minutes > 9 ? minutes : '0' + minutes) + ' Minutes '
-            + (seconds > 9 ? seconds : '0' + seconds) + ' Seconds'
+            (days > 9 ? days : '0' + days) + 'd ' +
+            (hours > 9 ? hours : '0' + hours) + 'h ' +
+            (minutes > 9 ? minutes : '0' + minutes) + 'm '
+            + (seconds > 9 ? seconds : '0' + seconds) + 's '
         )
     }
   }
@@ -356,7 +356,7 @@ const App = () => {
     // If you adjust it you should also need to
     // adjust the Endtime formula we are about
     // to code next    
-    setTimer('00 Days 00 Hours 00 Minutes 00 Seconds');
+    setTimer('00d 00h 00m 00s');
 
     // If you try to remove this line the 
     // updating of timer Variable will be
@@ -406,7 +406,7 @@ const App = () => {
   // Set up Image
   const setImage = () => {
     // some logic here with the contract IPFS
-    img_file = "https://gateway.pinata.cloud/ipfs/QmZWLjdRN5HXTSraEkhM1MSTZxNifjrssmr3dJM4JMSeuS";
+    img_file = " https://gateway.pinata.cloud/ipfs/QmWy46X5QpVA4DEVtPebddD4cBmKvCES1um6yCo1G7PuKE";
   }
 
   useEffect(() => {
@@ -460,20 +460,45 @@ const App = () => {
   return (
     <div className="App">
       <div className="container">
-        <div className="header-container">
-          <p className="header gradient-text">Octopus Game</p>
-          <p className="sub-text">
-            456 Octopus. 6 Rounds. 1 Massive Prize. Will you survive?
-          </p>
-          <h2 className="timer">{timer}</h2>
-        </div>
-        <div className="box">
-          <img src={img_file} />
-        </div>
+        
+          <div className="menu"> 
+            <div className="menuItems">About</div>
+            <div className="menuItems">FAQ</div>
+            <div className="menuItems">Connect Wallet</div>
+          </div>
+          <div className="top">
+            <div className="topLeft">
+              <img src={img_file} />
+            </div>
+            <div className="topRight">
+              <p className="header gradient-text">Octopus Game</p>
+              <p className="timer">{timer}</p>
+              <p className="sub-text">456 Octopi. 6 Rounds. 1 Massive Prize. Will you survive?</p>
+              <div> 
+                {renderContent()}
+              </div>
+            </div>
+          </div>
+          <div className="overview"> 
+            <div className="overviewCircle"> 
+              hello
+            </div>
+            <div className="overviewBox">
+              <h1>Get your octos</h1>
+              <p>Here is some placeholder Lorem ipsum text to explain how to get your octos to play the game. Max 5 lines and that should suffice to explain in brief what you need to know to play the Octopus Game. </p>
+            </div>
+          </div>
+          <div className="faq"> 
+            <p className="header gradient-text">FAQs</p>
+            <div className="faqItem">
+              <div className="faqQuestion">Question</div>
+              <div className="faqAnswer">Answer</div>
+            </div>
+          </div>
+          <div className="footer"> 
+            Follow us on Twitter and Discord. 
+          </div>
         <br></br>
-        <div> 
-          {renderContent()}
-        </div>
         <br></br>
         <br></br>
     </div>
