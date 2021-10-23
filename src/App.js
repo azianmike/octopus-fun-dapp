@@ -1,5 +1,7 @@
 import './styles/App.css';
 import twitterLogo from './assets/twitter-logo.svg';
+import symbols from './assets/symbols.png';
+import squid from './assets/squid.png';
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { ethers } from "ethers";
 import MyNFT from './utils/MyNFT.json';
@@ -409,7 +411,8 @@ const App = () => {
   // Set up Image
   const setImage = () => {
     // some logic here with the contract IPFS
-    img_file = " https://gateway.pinata.cloud/ipfs/QmWy46X5QpVA4DEVtPebddD4cBmKvCES1um6yCo1G7PuKE";
+    // img_file = " https://gateway.pinata.cloud/ipfs/QmWy46X5QpVA4DEVtPebddD4cBmKvCES1um6yCo1G7PuKE";
+    img_file={squid};
   }
 
   // function renderContent() {
@@ -469,7 +472,6 @@ const App = () => {
 
   const renderPlayGame = () => (
     <div className="body-container">
-        <p className="header gradient-text"> Time to play </p> 
         <br></br>
         <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
     </div> 
@@ -511,7 +513,7 @@ const App = () => {
           </div>
           <div className="top">
             <div className="topLeft">
-              <img src={img_file} />
+              <img className="squidTop" src={squid} />
             </div>
             <div className="topRight">
               <p className="header gradient-text">Octopus Game</p>
@@ -523,19 +525,38 @@ const App = () => {
             </div>
           </div>
           <div className="overview"> 
-            <div className="overviewCircle"> 
-              hello
-            </div>
+            <img className="overviewCircle" src={squid}></img>
             <div className="overviewBox">
-              <h1>Get your octos</h1>
-              <p>Here is some placeholder Lorem ipsum text to explain how to get your octos to play the game. Max 5 lines and that should suffice to explain in brief what you need to know to play the Octopus Game. </p>
+              <p className="header gradient-text">How to Play</p>
+              <div className="overviewInstructions">
+                <p className="overviewText">1. Mint your NFT. Each minter puts 0.1ETH into the prize pool. Minting for SPC happens from <b>X/X/2021 00:00AM - X/X/2021 00:00PM.</b></p>
+                <p className="overviewText">2. When each round opens, click "Play Game" to get your octopus to compete. Your octopus will either win (in which case you can mint in future rounds) or get eliminated.</p>
+                <p className="overviewText">3. All players will keep playing for <b>6 rounds</b>. Each round lasts for <b>24 hours.</b></p>
+                <p className="overviewText">4. The last player(s) standing will <b>split the pot of ETH.</b></p>
+              </div>
             </div>
           </div>
           <div className="faq"> 
             <p className="header gradient-text">FAQs</p>
             <div className="faqItem">
-              <div className="faqQuestion">Question</div>
-              <div className="faqAnswer">Answer</div>
+              <img src={symbols} className="symbols"></img>
+              <div className="faqQuestion">When is mint day? </div>
+              <div className="faqAnswer">For the first round (South Park Commons only), mint start will be on October 25, 2021, Monday. The countdown timer above will reflect mint start. </div>
+            </div>
+            <div className="faqItem">
+              <img src={symbols} className="symbols"></img>
+              <div className="faqQuestion">How long does each round last? </div>
+              <div className="faqAnswer">Each round lasts for a day. You need to 'Play Round' within the day to be counted. If you do not 'Play Round', your Octopus will die automatically.</div>
+            </div>
+            <div className="faqItem">
+              <img src={symbols} className="symbols"></img>
+              <div className="faqQuestion">How much money is in the pot?</div>
+              <div className="faqAnswer">The pot is dependent on the number of people that play and how many people will win. Given each mint is 0.1 ETH, let's assume maximum amount of players mint, hence the maximum amount in the pot is 45.6 ETH. </div>
+            </div>
+            <div className="faqItem">
+              <img src={symbols} className="symbols"></img>
+              <div className="faqQuestion">Can there be more than one winner?</div>
+              <div className="faqAnswer">Yes. At the end of the 6 rounds, all the winners left standing will divvy up the prize money. </div>
             </div>
           </div>
           <div className="footer"> 
