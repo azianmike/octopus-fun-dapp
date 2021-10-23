@@ -54,8 +54,7 @@ const App = () => {
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
   const [hasNFT, setNFT] = useState(false);
-  const [timer, setTimer] = useState('00 Days 00 Hours 00 Minutes 00 Seconds');
-
+  const [timer, setTimer] = useState('00d 00h 00m 00s');
 
   // const img_file = useState();
 
@@ -378,9 +377,6 @@ const App = () => {
     // If you adjust it you should also need to
     // adjust the Endtime formula we are about
     // to code next    
-
-    setTimer('00d 00h 00m 00s');
-
     // If you try to remove this line the 
     // updating of timer Variable will be
     // after 1000ms or 1sec
