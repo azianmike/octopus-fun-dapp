@@ -275,6 +275,32 @@ const App = () => {
     }
   } 
 
+  /*---------------------Get Address from Toked ID--------*/
+
+//   const getMints = useCallback(async () => {
+//     try {
+//       const { ethereum } = window;
+//       if (ethereum) {
+//         console.log("ETHEREUM READY TO MINT");
+//         const web3 = new Web3(ethereum);
+//         const id = await web3.eth.net.getId();
+//         // const deployedNetwork = MyNFT.networks[id];
+//         const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+//         const addresses = await web3.eth.getAccounts();
+//         const currentMints = await contract.methods.aliveNFTCount().call();
+//         // const provider = new ethers.providers.Web3Provider(ethereum);
+//         // const signer = provider.getSigner();
+//         // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
+//         // console.log(connectedContract);
+//         // const currentMints = await connectedContract.aliveNFTCount(); 
+//         console.log(currentMints);
+//         setCurrentMints(currentMints);
+//       } 
+//     } catch (error) {
+//     console.log(error)
+//     }
+// }, [setCurrentMints]);
+
   /*----------------------PLAY ROUND---------------------------*/
   const playRound = () => {
     console.log("inside play round");
