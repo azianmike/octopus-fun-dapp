@@ -11,7 +11,7 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
 const CONTRACT_ADDRESS = "0xC5a51c08A09aF92C816bA32786397C4008d937f6"; // Change Address
-const MINT_DATE = "2021-10-22T19:00:00";
+const MINT_DATE = "2021-10-23T19:00:00";
 
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
@@ -396,23 +396,47 @@ const App = () => {
 
   // Render Methods
   const renderNotConnectedContainer = () => (
-    <button onClick={connectWallet} className="cta-button connect-wallet-button">
-      Connect to Wallet
-    </button>
+    <div className="walletUI">
+      <button onClick={connectWallet} className="cta-button connect-wallet-button">
+        Connect to Wallet
+      </button>
+      <br></br>
+      <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+    </div>
   );
 
   const renderMintUI = () => (
-    <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
-      Mint me an Octopus
-    </button>
+    <div className="mintUI">
+      <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
+        Mint me an Octopus
+      </button>
+      <br></br>
+      <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+    </div>
   )
 
   const renderPlayGame = () => (
     <div className="body-container">
         <p className="header gradient-text"> Time to play </p> 
+        <br></br>
         <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
     </div> 
   )
+
+  function renderContent() {
+    if (gameOpen) {
+      if (currentAccount) {
+        return renderPlayGame();
+      }
+      return renderNotConnectedContainer();
+    } else {
+      if (currentAccount) {
+        return renderMintUI();
+      } else {
+        return renderNotConnectedContainer();
+      }
+    }
+  }
 
   return (
     <div className="App">
@@ -429,10 +453,10 @@ const App = () => {
         </div>
         <br></br>
         <div> 
-          {currentAccount === "" ? renderNotConnectedContainer() : renderMintUI()}
-           <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+          {renderContent()}
         </div>
-        {gameOpen === false ? <div></div> : renderPlayGame()}
+        <br></br>
+        <br></br>
     </div>
   </div>
   );
