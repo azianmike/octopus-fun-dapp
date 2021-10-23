@@ -129,28 +129,33 @@ const App = () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
-        const amountToSend = 0.1;
-        console.log("amount to send", amountToSend);
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
-        console.log("connectedcontract", connectedContract)
-        console.log("Going to pop wallet now to pay gas...")
-        console.log(connectedContract);
-        // This is what calls our connected contract
-        let nftTxn = await connectedContract.mintNFT(currentAccount, "sending money to mint")
+        const amountToSend = 100000000000000000;
+        // console.log("amount to send", amountToSend);
+        // const provider = new ethers.providers.Web3Provider(ethereum);
+        // const signer = provider.getSigner();
+        // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
+        // console.log("connectedcontract", connectedContract)
+        // console.log("Going to pop wallet now to pay gas...")
+        // console.log(connectedContract);
+        // // This is what calls our connected contract
+        // let nftTxn = await connectedContract.mintNFT(currentAccount, "sending money to mint")
 
         // console.log("Mining...please wait.")
         // await nftTxn.wait();
 
         // console.log(`Mined, see transaction: https://ropsten.etherscan.io/tx/${nftTxn.hash}`);
 
-        // const web3 = new Web3(ethereum);
-        // const id = await web3.eth.net.getId();
+        const web3 = new Web3(ethereum);
+        const id = await web3.eth.net.getId();
         // const deployedNetwork = MyNFT.networks[id];
-        // const contract = new web3.eth.Contract(MyNFT, deployedNetwork.address);
-        // const addresses = await web3.eth.getAccounts();
-        // await contract.methods.sendEther().send({from:currentAccount, value:amountToSend})
+        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+        const addresses = await web3.eth.getAccounts();
+        contract.methods.mintNFT(currentAccount, "testing Web3!").send({from:currentAccount, value:amountToSend}).then( function( info ) { 
+          console.log("mint info: ", info);
+          console.log("token ID is ", info.events.Transfer.returnValues.tokenId);
+          const returnMessage = "You've successfuly minted and entered an NFT into the Octopus Fun game! Your number is " + info.events.Transfer.returnValues.tokenId;
+          document.getElementById('lastInfo3').innerHTML = returnMessage;
+        });    
 
         // getMints();
 
