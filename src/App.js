@@ -153,8 +153,6 @@ const App = () => {
         contract.methods.mintNFT(currentAccount, "testing Web3!").send({from:currentAccount, value:amountToSend}).then( function( info ) { 
           console.log("mint info: ", info);
           console.log("token ID is ", info.events.Transfer.returnValues.tokenId);
-          const returnMessage = "You've successfuly minted and entered an NFT into the Octopus Fun game! Your number is " + info.events.Transfer.returnValues.tokenId;
-          document.getElementById('lastInfo3').innerHTML = returnMessage;
         });    
 
         // getMints();
