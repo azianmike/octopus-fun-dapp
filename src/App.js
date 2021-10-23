@@ -11,7 +11,11 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
 const CONTRACT_ADDRESS = "0xC5a51c08A09aF92C816bA32786397C4008d937f6"; // Change Address
-const MINT_DATE = "2021-10-24T19:00:00";
+const MINT_DATE = "2021-10-22T19:00:00";
+
+const pinataSDK = require('@pinata/sdk');
+const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
+var img_file;
 
 const App = () => {
   /*
@@ -22,6 +26,7 @@ const App = () => {
   const [totalPlayers, setTotalPlayers] = useState();
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
+  // const img_file = useState();
 
   // const web3 = new Web3(window.ethereum);
   // const connectedContract = web3.eth.Contract(MyNFT.abi, CONTRACT_ADDRESS);
@@ -118,12 +123,21 @@ const App = () => {
     }
   }
 
-/*----------------------MINT---------------------------*/
+  // Set up Image
+  const setImage = () => {
+    // some logic here with the contract IPFS
+    img_file = "https://gateway.pinata.cloud/ipfs/QmZWLjdRN5HXTSraEkhM1MSTZxNifjrssmr3dJM4JMSeuS";
+  }
+
+  useEffect(() => {
+    setImage();
+  }, [])
+
+  /*----------------------MINT---------------------------*/
   const askContractToMintNft = useCallback(async () => {
     // This function doesn't yet work
     try {
       const { ethereum } = window;
-
       if (ethereum) {
         const amountToSend = 100000000000000000;
         console.log("amount to send", amountToSend);
@@ -207,7 +221,6 @@ const App = () => {
   /*----------------------SET & PLAY ROUNDS---------------------------*/
 
   const setRound = () => {
-    console.log("CURRENT ROUND pre:", currentRound)
     var dateRound1 = new Date('2021-10-20T10:00:00');
     var dateRound2 = new Date('2021-10-22T10:00:00');
     var dateRound3 = new Date('2021-10-23T10:00:00');
@@ -288,9 +301,9 @@ const App = () => {
     var now = new Date().getTime();
     var timeleft = mintTimer - now;
     if (timeleft > 0) {
-      setGameOpen(true);
-    } else {
       setGameOpen(false);
+    } else {
+      setGameOpen(true);
     }
   }
 
@@ -307,7 +320,7 @@ const App = () => {
         const seconds = Math.floor((total / 1000) % 60);
         const minutes = Math.floor((total / 1000 / 60) % 60);
         const hours = Math.floor((total / 1000 * 60 * 60) % 24);
-        const days = Math.floor(total / 1000 * 60 * 60 * 24);
+        const days = Math.floor(total / (1000 * 60 * 60 * 24));
         return {
             total, days, hours, minutes, seconds
     };
@@ -334,7 +347,7 @@ const App = () => {
     // If you adjust it you should also need to
     // adjust the Endtime formula we are about
     // to code next    
-    setTimer('');
+    setTimer('00 Days 00 Hours 00 Minutes 00 Seconds');
 
     // If you try to remove this line the 
     // updating of timer Variable will be
@@ -376,9 +389,9 @@ const App = () => {
   //   getTotalPlayers()
   // }, [getTotalPlayers])
 
-  // useEffect(() => {
-  //   getMints()
-  // }, [getMints])
+  useEffect(() => {
+    getMints()
+  }, [getMints])
 
 
   // Render Methods
@@ -405,27 +418,21 @@ const App = () => {
     <div className="App">
       <div className="container">
         <div className="header-container">
-          <p className="header gradient-text">GM. Let's get you some coffee.</p>
+          <p className="header gradient-text">Octopus Game</p>
           <p className="sub-text">
-            Time for your unique coffee of the day.
+            456 Octopus. 6 Rounds. 1 Massive Prize. Will you survive?
           </p>
-          <h2>{timer}</h2>
+          <h2 className="timer">{timer}</h2>
         </div>
+        <div className="box">
+          <img src={img_file} />
+        </div>
+        <br></br>
         <div> 
           {currentAccount === "" ? renderNotConnectedContainer() : renderMintUI()}
            <p className="sub-text">{currentMints} / {totalPlayers}</p> 
-           <p className="footer-text"><a href={OPENSEA_LINK} style={{color:"white"}}>View the collection</a></p>
         </div>
         {gameOpen === false ? <div></div> : renderPlayGame()}
-        <div className="footer-container">
-          <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
-          <a
-            className="footer-text"
-            href={TWITTER_LINK}
-            target="_blank"
-            rel="noreferrer"
-          >{`built by @${TWITTER_HANDLE}`}</a>
-        </div>
     </div>
   </div>
   );
