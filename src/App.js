@@ -12,7 +12,7 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
 const CONTRACT_ADDRESS = "0xC5a51c08A09aF92C816bA32786397C4008d937f6"; // Change Address
-const MINT_DATE = "2021-10-23T19:00:00";
+const MINT_DATE = "2021-10-22T19:00:00";
 
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
@@ -250,16 +250,22 @@ const App = () => {
   } 
 
   const playRound = () => {
+    console.log("inside play round");
     try {
       const { ethereum } = window;
-
       if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
-        console.log("Connected Contract", connectedContract);
+        console.log("inside if");
+        // const provider = new ethers.providers.Web3Provider(ethereum);
+        // const signer = provider.getSigner();
+        // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
+
+        const web3 = new Web3(ethereum);
+        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+        console.log("Connected Contract", contract);
+        
         if (currentRound===1) {
           console.log("WE ENTEREED CURRENT ROUND 1", currentRound);
+          contract.methods.playRound1();
           // const playRound1 = await connectedContract.playRound1();
         }
         else if (currentRound===2) {
@@ -267,6 +273,15 @@ const App = () => {
         }
         else if (currentRound===3) {
           console.log("currentRound",currentRound);
+          console.log("currentAccount", currentAccount)
+          try { 
+            contract.methods.playRound3(currentAccount, 123).send({from:currentAccount}).then( function( info ) { 
+              console.log("mint info: ", info);
+              console.log("token ID is ", info.events.Transfer.returnValues.tokenId);
+            });
+          } catch(e) {
+            console.error(e); 
+          }
         }
         else if (currentRound===4) {
           console.log("currentRound",currentRound);
