@@ -123,30 +123,20 @@ const App = () => {
     }
   }
 
-  // Set up Image
-  const setImage = () => {
-    // some logic here with the contract IPFS
-    img_file = "https://gateway.pinata.cloud/ipfs/QmZWLjdRN5HXTSraEkhM1MSTZxNifjrssmr3dJM4JMSeuS";
-  }
-
-  useEffect(() => {
-    setImage();
-  }, [])
-
   /*----------------------MINT---------------------------*/
   const askContractToMintNft = useCallback(async () => {
     // This function doesn't yet work
     try {
       const { ethereum } = window;
       if (ethereum) {
-        const amountToSend = 100000000000000000;
+        const amountToSend = 0.1;
         console.log("amount to send", amountToSend);
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
         console.log("connectedcontract", connectedContract)
         console.log("Going to pop wallet now to pay gas...")
-        
+        console.log(connectedContract);
         // This is what calls our connected contract
         let nftTxn = await connectedContract.mintNFT(currentAccount, "sending money to mint")
 
@@ -393,6 +383,16 @@ const App = () => {
     getMints()
   }, [getMints])
 
+
+  // Set up Image
+  const setImage = () => {
+    // some logic here with the contract IPFS
+    img_file = "https://gateway.pinata.cloud/ipfs/QmZWLjdRN5HXTSraEkhM1MSTZxNifjrssmr3dJM4JMSeuS";
+  }
+
+  useEffect(() => {
+    setImage();
+  }, [])
 
   // Render Methods
   const renderNotConnectedContainer = () => (
