@@ -55,9 +55,11 @@ const App = () => {
   const [totalPlayers, setTotalPlayers] = useState();
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
+<<<<<<< HEAD
   const [deadOrAlive, setDeadOrAlive] = useState(false);
   const [hasNFT, setNFT] = useState(false);
   const [timer, setTimer] = useState("loading");
+  const [tokenURI, setTokenURI] = useState();
 
   // const img_file = useState();
 
@@ -186,6 +188,7 @@ const App = () => {
         const addresses = await web3.eth.getAccounts();
         var ipfs_uri = IPFS[currentMints];
         console.log(ipfs_uri);
+        console.log("currentaccount", currentAccount);
         contract.methods.mintNFT(currentAccount, ipfs_uri).send({from:currentAccount, value:amountToSend}).then( function( info ) { 
           console.log("mint info: ", info);
           console.log("token ID is ", info.events.Transfer.returnValues.tokenId);
@@ -309,6 +312,32 @@ const App = () => {
     }
   } 
 
+  /*---------------------Get TokedID from Address--------------------*/
+
+  const grabtokenURI = useCallback(async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const web3 = new Web3(ethereum);
+        const id = await web3.eth.net.getId();
+        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+        const addresses = await web3.eth.getAccounts();
+        console.log(currentAccount);
+        const contracttokenURI = await contract.methods.getTokenURIFromAddress(currentAccount).call();
+        // const provider = new ethers.providers.Web3Provider(ethereum);
+        // const signer = provider.getSigner();
+        // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
+        // console.log(connectedContract);
+        // const currentMints = await connectedContract.aliveNFTCount(); 
+        console.log("up next is the token");
+        console.log(contracttokenURI);
+        setTokenURI(contracttokenURI);
+      } 
+    } catch (error) {
+      console.log(error)
+    }
+});
+
   /*----------------------PLAY ROUND---------------------------*/
   const playRound = () => {
     console.log("inside play round");
@@ -323,6 +352,8 @@ const App = () => {
         const web3 = new Web3(ethereum);
         const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
         console.log("Connected Contract", contract);
+
+        console.log("current accont", currentAccount)
         
         if (currentRound===1) {
           console.log("WE ENTEREED CURRENT ROUND 1", currentRound);
@@ -444,6 +475,10 @@ const App = () => {
 
   console.log("dead or alive state is " + deadOrAlive);
 
+  useEffect(() => {
+    grabtokenURI();
+  })
+
   // Set up Image
   const setImage = () => {
     // some logic here with the contract IPFS
@@ -460,7 +495,7 @@ const App = () => {
   //     }
   //   } else {
   //     if (currentAccount) {
-  //       if (hasNFT) {
+  //       if (tokenURI) {
   //         return renderNoMintUI();
   //       } else {
   //         return renderMintUI();
@@ -482,7 +517,7 @@ const App = () => {
         Connect to Wallet
       </button>
       <br></br>
-      <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+      <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p>  
     </div>
   );
 
@@ -492,17 +527,17 @@ const App = () => {
         Mint me an Octopus
       </button>
       <br></br>
-      <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+      <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
     </div>
   )
 
   const renderNoMintUI = () => (
     <div className="mintUI">
       <button className="cta-button no-mint">
-        You have an octopus
+        Limit 1 Octopus per wallet. You already have one!
       </button>
       <br></br>
-      <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+      <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
     </div>
   )
 
@@ -522,7 +557,7 @@ const App = () => {
       }
     } else {
       if (currentAccount) {
-        if (hasNFT) {
+        if (tokenURI) {
           return renderNoMintUI();
         } else {
           return renderMintUI();
@@ -582,7 +617,14 @@ const App = () => {
             <div className="faqItem">
               <img src={symbols} className="symbols"></img>
               <div className="faqQuestion">How long does each round last? </div>
-              <div className="faqAnswer">Each round lasts for a day. You need to 'Play Round' within the day to be counted. If you do not 'Play Round', your Octopus will die automatically.</div>
+              <div className="faqAnswer">Each round lasts for a day. You need to 'Play Round' while the round is open to be counted. If you do not 'Play Round', your Octopus will die automatically.
+              <br/>Round 1 is from Oct 25 12am - 11:59pm
+              <br/>Round 2 is from Oct 26 12am - 11:59pm
+              <br/>Round 3 is from Oct 27 12am - 11:59pm
+              <br/>Round 4 is from Oct 28 12am - 11:59pm
+              <br/>Round 5 is from Oct 29 12am - 11:59pm
+              <br/>Round 6 is from Oct 30 12am - 11:59pm
+              </div>
             </div>
             <div className="faqItem">
               <img src={symbols} className="symbols"></img>
