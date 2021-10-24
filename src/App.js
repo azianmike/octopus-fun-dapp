@@ -827,7 +827,7 @@ const App = () => {
             <div className="overviewBox">
               <p className="header gradient-text">How to Play</p>
               <div className="overviewInstructions">
-                <p className="overviewText">1. Mint your NFT. Each minter puts 0.1ETH into the prize pool. Minting for SPC happens from <b>X/X/2021 00:00AM - X/X/2021 00:00PM.</b></p>
+                <p className="overviewText">1. Mint your NFT. Each minter puts 0.1ETH into the prize pool. Minting for SPC happens from <b>10/24/2021 12:00PT - 10/25/2021 11:59PM.</b></p>
                 <p className="overviewText">2. When each round opens, click "Play Game" to get your octopus to compete. Your octopus will either win (in which case you can mint in future rounds) or get eliminated.</p>
                 <p className="overviewText">3. All players will keep playing for <b>6 rounds</b>. Each round lasts for <b>24 hours.</b></p>
                 <p className="overviewText">4. The last player(s) standing will <b>split the pot of ETH.</b></p>
