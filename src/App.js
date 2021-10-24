@@ -55,7 +55,6 @@ const App = () => {
   const [totalPlayers, setTotalPlayers] = useState();
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
-  const [hasNFT, setNFT] = useState(false);
   const [timer, setTimer] = useState("loading");
   const [tokenURI, setTokenURI] = useState();
 
@@ -458,7 +457,7 @@ const App = () => {
   //     }
   //   } else {
   //     if (currentAccount) {
-  //       if (hasNFT) {
+  //       if (tokenURI) {
   //         return renderNoMintUI();
   //       } else {
   //         return renderMintUI();
@@ -480,7 +479,7 @@ const App = () => {
         Connect to Wallet
       </button>
       <br></br>
-      <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+      <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p>  
     </div>
   );
 
@@ -490,17 +489,17 @@ const App = () => {
         Mint me an Octopus
       </button>
       <br></br>
-      <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+      <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
     </div>
   )
 
   const renderNoMintUI = () => (
     <div className="mintUI">
       <button className="cta-button no-mint">
-        You have an octopus
+        Limit 1 Octopus per wallet. You already have one!
       </button>
       <br></br>
-      <p className="sub-text">{currentMints} / {totalPlayers}</p> 
+      <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
     </div>
   )
 
@@ -520,7 +519,7 @@ const App = () => {
       }
     } else {
       if (currentAccount) {
-        if (hasNFT) {
+        if (tokenURI) {
           return renderNoMintUI();
         } else {
           return renderMintUI();
