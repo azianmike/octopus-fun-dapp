@@ -15,7 +15,7 @@ const TWITTER_HANDLE = '__mikareyes';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
-const CONTRACT_ADDRESS = "0x02B103E0baa8B4bcb66ACE92c5062DD40E71BeB3"; // Change Address
+const CONTRACT_ADDRESS = "0x1E81482f1C9e91b2c9633f8Bd18D55E61e69DE32"; // Change Address
 
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
@@ -199,6 +199,30 @@ const App = () => {
         });    
 
         // getMints();
+
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  })
+
+    /*----------------------MINT---------------------------*/
+  const checkIfWinnerAndPayout = useCallback(async () => {
+    // This function doesn't yet work
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+
+        const web3 = new Web3(ethereum);
+        const id = await web3.eth.net.getId();
+        // const deployedNetwork = MyNFT.networks[id];
+        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+        const addresses = await web3.eth.getAccounts();
+        contract.methods.checkIfWinnerAndPayout(currentAccount).send({from:currentAccount}).then( function( info ) { 
+          console.log("checkIfWinnerAndPayout info: ", info);
+        });    
 
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -718,13 +742,8 @@ const App = () => {
         <p className="header gradient-text">You... won!</p>
         <p className="sub-text">Ready to claim your winnings?</p>
         <div className="mintUI">
-<<<<<<< HEAD
-          <button onClick={askContractToMintNft} className="cta-button connect-wallet-button"> // Replace with redeem rewards
+          <button onClick={checkIfWinnerAndPayout} className="cta-button connect-wallet-button">
             Claim the pot
-=======
-          <button onClick={askContractToSplitFunds} className="cta-button connect-wallet-button"> // Replace with redeem rewards
-            Redeem rewards
->>>>>>> 91c7cd00fb626fcff1e41a8507e163c01b5cdcd8
           </button>
           <br></br>
           <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
