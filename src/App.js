@@ -718,14 +718,9 @@ const App = () => {
         <p className="header gradient-text">You... won!</p>
         <p className="sub-text">Ready to claim your winnings?</p>
         <div className="mintUI">
-<<<<<<< HEAD
-          <button onClick={askContractToMintNft} className="cta-button connect-wallet-button"> // Replace with redeem rewards
-            Claim the pot
-=======
-          <button onClick={askContractToSplitFunds} className="cta-button connect-wallet-button"> // Replace with redeem rewards
+          {/* <button onClick={askContractToSplitFunds} className="cta-button connect-wallet-button"> // Replace with redeem rewards
             Redeem rewards
->>>>>>> 91c7cd00fb626fcff1e41a8507e163c01b5cdcd8
-          </button>
+          </button> */}
           <br></br>
           <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
         </div>
