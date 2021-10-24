@@ -548,7 +548,7 @@ const App = () => {
   const setImage = () => {
     // some logic here with the contract IPFS
     // img_file = " https://gateway.pinata.cloud/ipfs/QmWy46X5QpVA4DEVtPebddD4cBmKvCES1um6yCo1G7PuKE";
-    img_file={squid};
+    img_file=squid;
   }
 
   // function renderContent() {
@@ -579,7 +579,7 @@ const App = () => {
   const renderNotConnectedContainerPreGame = () => (
     <div className="top">
       <div className="topLeft">
-        <img className="squidTop" src={squid} />
+        <img className="squidTop" src={img_file} />
       </div>
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
@@ -599,7 +599,7 @@ const App = () => {
   const renderNotConnectedContainerPostGame = () => (
     <div className="top">
       <div className="topLeft">
-        <img className="squidTop" src={squid} />
+        <img className="squidTop" src={img_file} />
       </div>
         <div className="topRight">
           <p className="header gradient-text">Octopus Game</p>
@@ -617,7 +617,7 @@ const App = () => {
   const renderMintUI = () => (
     <div className="top">
       <div className="topLeft">
-        <img className="squidTop" src={squid} />
+        <img className="squidTop" src={img_file} />
       </div>
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
@@ -637,7 +637,7 @@ const App = () => {
   const renderGameLoadingUI = () => (
     <div className="top">
       <div className="topLeft">
-        <img className="squidTop" src={squid} />
+        <img className="squidTop" src={img_file} />
       </div>
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
@@ -649,7 +649,7 @@ const App = () => {
   const renderNoMintUI = () => (
     <div className="top">
       <div className="topLeft">
-        <img className="squidTop" src={squid} />
+        <img className="squidTop" src={img_file} />
       </div>
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
@@ -669,7 +669,7 @@ const App = () => {
   const renderPlayGame = () => (
     <div className="top">
       <div className="topLeft">
-        <img className="squidTop" src={squid} />
+        <img className="squidTop" src={img_file} />
       </div>
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
