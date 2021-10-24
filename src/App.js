@@ -76,7 +76,7 @@ const App = () => {
       console.log("Make sure you have metamask!");
       return;
     } else {
-      console.log("We have the ethereum object", ethereum);
+      // console.log("We have the ethereum object", ethereum);
       // console.log("We have the ethereum object", ethereum);
     }
     /*
@@ -210,7 +210,7 @@ const App = () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
-        console.log("ETHEREUM READY TO MINT");
+        // console.log("ETHEREUM READY TO MINT");
         const web3 = new Web3(ethereum);
         const id = await web3.eth.net.getId();
         // const deployedNetwork = MyNFT.networks[id];
@@ -222,7 +222,7 @@ const App = () => {
         // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
         // console.log(connectedContract);
         // const currentMints = await connectedContract.aliveNFTCount(); 
-        console.log(currentMints);
+        // console.log(currentMints);
         setCurrentMints(currentMints);
       } 
     } catch (error) {
@@ -306,7 +306,7 @@ const App = () => {
     }
     else { 
       // console.log("set round 0");
-      setCurrentRound(0);
+      setCurrentRound(1);
     }
   } 
 
@@ -321,15 +321,15 @@ const App = () => {
           const id = await web3.eth.net.getId();
           const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
           const addresses = await web3.eth.getAccounts();
-          console.log(currentAccount);
+          // console.log(currentAccount);
           const contracttokenURI = await contract.methods.getTokenURIFromAddress(currentAccount).call();
           // const provider = new ethers.providers.Web3Provider(ethereum);
           // const signer = provider.getSigner();
           // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
           // console.log(connectedContract);
           // const currentMints = await connectedContract.aliveNFTCount(); 
-          console.log("up next is the token");
-          console.log(contracttokenURI);
+          // console.log("up next is the token");
+          // console.log(contracttokenURI);
           setTokenURI(contracttokenURI);
         } 
       } catch (error) {
@@ -354,35 +354,50 @@ const App = () => {
         console.log("Connected Contract", contract);
 
         console.log("current accont", currentAccount)
-        
+        console.log("current round", currentRound)
+        const addresses = web3.eth.getAccounts();
+        var ipfs_uri = IPFS[currentMints];
         if (currentRound===1) {
-          console.log("WE ENTEREED CURRENT ROUND 1", currentRound);
-          contract.methods.playRound1();
-          // const playRound1 = await connectedContract.playRound1();
+          console.log("playing round 1")
+          contract.methods.playRound1(currentAccount).send({from:currentAccount}).then( function( info ) { 
+            console.log("return is : ", info);
+            // Call function to check if player is dead or alive
+          }); 
         }
         else if (currentRound===2) {
-          console.log("currentRound",currentRound);
+          console.log("playing round 2")
+          contract.methods.playRound2(currentAccount).send({from:currentAccount}).then( function( info ) { 
+            console.log("return is : ", info);
+            // Call function to check if player is dead or alive
+          }); 
         }
         else if (currentRound===3) {
-          console.log("currentRound",currentRound);
-          console.log("currentAccount", currentAccount)
-          try { 
-            contract.methods.playRound3(currentAccount, 123).send({from:currentAccount}).then( function( info ) { 
-              console.log("mint info: ", info);
-              console.log("token ID is ", info.events.Transfer.returnValues.tokenId);
-            });
-          } catch(e) {
-            console.error(e); 
-          }
+          console.log("playing round 3")
+          contract.methods.playRound3(currentAccount).send({from:currentAccount}).then( function( info ) { 
+            console.log("return is : ", info);
+            // Call function to check if player is dead or alive
+          }); 
         }
         else if (currentRound===4) {
-          console.log("currentRound",currentRound);
+          console.log("playing round 4")
+          contract.methods.playRound4(currentAccount).send({from:currentAccount}).then( function( info ) { 
+            console.log("return is : ", info);
+            // Call function to check if player is dead or alive
+          }); 
         }
         else if (currentRound===5) {
-          console.log("curretnRound",currentRound);
+          console.log("playing round 5")
+          contract.methods.playRound5(currentAccount).send({from:currentAccount}).then( function( info ) { 
+            console.log("return is : ", info);
+            // Call function to check if player is dead or alive
+          }); 
         }
         else if (currentRound===6) {
-          console.log("curretnRound",currentRound);
+          console.log("playing round 6")
+          contract.methods.playRound6(currentAccount).send({from:currentAccount}).then( function( info ) { 
+            console.log("return is : ", info);
+            // Call function to check if player is dead or alive
+          }); 
         }
         // For the "play round" button
         // Assuming the player has the existing NFT AND is alive to see the "Play Round" button AND after the game is open AND the current round is open 
