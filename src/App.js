@@ -763,7 +763,7 @@ const App = () => {
         <p className="sub-text">until end of round</p>
         <div className="body-container">
             <br></br>
-            <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
+            <button onClick={playRound} className="cta-button connect-wallet-button">Play Round {currentRound}</button>
         </div> 
       </div>
     </div>
