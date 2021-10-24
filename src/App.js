@@ -719,7 +719,7 @@ const App = () => {
         <p className="header gradient-text">Octopus Game</p>
         <p className="sub-text">You have survived all rounds. You have won.</p>
         <div className="mintUI">
-          <button onClick={askContractToMintNft} className="cta-button connect-wallet-button"> // Replace with redeem rewards
+          <button onClick={askContractToSplitFunds} className="cta-button connect-wallet-button"> // Replace with redeem rewards
             Redeem rewards
           </button>
           <br></br>
@@ -766,7 +766,7 @@ const App = () => {
           console.log("current round " + currentRound)
           return renderAliveScreen();
         } else {
-          // you missed a round UI #9
+          // you missed a round... UI #9
           return renderDeadDueToMissingRound();
         }
       } else {
