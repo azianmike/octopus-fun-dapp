@@ -55,6 +55,7 @@ const App = () => {
   const [totalPlayers, setTotalPlayers] = useState();
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
+  const [deadOrAlive, setDeadOrAlive] = useState(false);
   const [hasNFT, setNFT] = useState(false);
   const [timer, setTimer] = useState("loading");
 
@@ -75,6 +76,7 @@ const App = () => {
       return;
     } else {
       console.log("We have the ethereum object", ethereum);
+      // console.log("We have the ethereum object", ethereum);
     }
     /*
       * Check if we're authorized to access the user's wallet
@@ -86,7 +88,7 @@ const App = () => {
       */
     if (accounts.length !== 0) {
           const account = accounts[0];
-          console.log("Found an authorized account:", account);
+          // console.log("Found an authorized account:", account);
           setCurrentAccount(account)
           setupEventListener()
       } else {
@@ -134,7 +136,7 @@ const App = () => {
         // Ethers is a library that helps our frontend talk to our contract. Provider is what we use to actually talk to ethereum nodes. We use nodes that Metamask provides
         const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
         // The above line is what actually creates the connection to contract; neesd abi and signer
-        console.log("Connected Contract", connectedContract);
+        // console.log("Connected Contract", connectedContract);
         // THIS IS THE MAGIC SAUCE.
         // This will essentially "capture" our event when our contract throws it.
         // If you're familiar with webhooks, it's very similar to that!
@@ -145,7 +147,7 @@ const App = () => {
         //   alert(`Hey there! We've minted your NFT and sent it to your wallet. It may be blank right now. It can take a max of 10 min to show up on OpenSea. Here's the link: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`)
         // });
 
-        console.log("Setup event listener!")
+        // console.log("Setup event listener!")
 
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -232,6 +234,38 @@ const App = () => {
     setTotalPlayers(456);
   }
 
+
+  /*----------------------Check if player has an alive NFT---------------------------*/
+ // OCTOPUS FUN: KEEP THIS
+  /* Get current number of mints*/
+  const checkIfDeadOrAlive = useCallback(async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        console.log("Checking if player is dead or alive!");
+        const web3 = new Web3(ethereum);
+        const id = await web3.eth.net.getId();
+        // const deployedNetwork = MyNFT.networks[id];
+        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+        const addresses = await web3.eth.getAccounts();
+        // console.log("Current account is " + currentAccount);
+        console.log("Addresses is " + addresses[0]);
+        const currentMints = await contract.methods.checkIfPlayerIsAlive(addresses[0]).call().then(function( deadOrAliveFromContract ) { 
+          console.log("alive status is ", deadOrAliveFromContract);
+          setDeadOrAlive(deadOrAliveFromContract);
+        });
+      } 
+    } catch (error) {
+    console.log(error)
+    }
+  }, [setDeadOrAlive]);
+
+  // OCTOPUS FUN: KEEP THIS
+  /* Gets total mint supply */ 
+  // const getTotalPlayers = () => {
+  //   setTotalPlayers(456);
+  // }
+
   /* List of pending functions to connect based on smart contract */ 
 
   // const getNumberOfAlivePlayers = () => {
@@ -270,7 +304,7 @@ const App = () => {
       setCurrentRound(6);
     }
     else { 
-      console.log("set round 0");
+      // console.log("set round 0");
       setCurrentRound(0);
     }
   } 
@@ -405,8 +439,10 @@ const App = () => {
   }, [getTotalPlayers])
 
   useEffect(() => {
-    getMints()
-  }, [getMints])
+    checkIfDeadOrAlive()
+  }, [checkIfDeadOrAlive])
+
+  console.log("dead or alive state is " + deadOrAlive);
 
   // Set up Image
   const setImage = () => {
