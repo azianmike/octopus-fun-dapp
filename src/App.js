@@ -61,6 +61,7 @@ const App = () => {
   const [timer, setTimer] = useState("loading");
   const [tokenURI, setTokenURI] = useState();
   const [playRoundLoading, setPlayRoundLoading] = useState(false);
+  const [userRound, setUserRound] = useState(1);
 
   // const img_file = useState();
 
@@ -238,6 +239,26 @@ const App = () => {
     setTotalPlayers(456);
   }
 
+  /* Get current round of player*/
+  const getUsersCurrentRound = useCallback(async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        // console.log("ETHEREUM READY TO MINT");
+        const web3 = new Web3(ethereum);
+        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+        const currentMints = contract.methods.aliveNFTs(currentAccount).call().then(function( uRound ) { 
+            if (uRound == 0) {
+              setUserRound(0);
+            } else {
+              setUserRound(uRound);
+            }
+        });
+      } 
+    } catch (error) {
+    console.log(error)
+    }
+  });
 
   /*----------------------Check if player has an alive NFT---------------------------*/
  // OCTOPUS FUN: KEEP THIS
@@ -365,6 +386,8 @@ const App = () => {
           contract.methods.playRound1(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            checkIfDeadOrAlive();
+            getUsersCurrentRound();
             setPlayRoundLoading(false);
           }); 
 
@@ -375,6 +398,8 @@ const App = () => {
           contract.methods.playRound2(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            checkIfDeadOrAlive();
+            getUsersCurrentRound();
             setPlayRoundLoading(false);
           }); 
         }
@@ -384,6 +409,8 @@ const App = () => {
           contract.methods.playRound3(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            checkIfDeadOrAlive();
+            getUsersCurrentRound();
             setPlayRoundLoading(false);
           }); 
         }
@@ -393,6 +420,8 @@ const App = () => {
           contract.methods.playRound4(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            checkIfDeadOrAlive();
+            getUsersCurrentRound();
             setPlayRoundLoading(false);
           }); 
         }
@@ -402,6 +431,8 @@ const App = () => {
           contract.methods.playRound5(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            checkIfDeadOrAlive();
+            getUsersCurrentRound();
             setPlayRoundLoading(false);
           }); 
         }
@@ -411,6 +442,8 @@ const App = () => {
           contract.methods.playRound6(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            checkIfDeadOrAlive();
+            getUsersCurrentRound();
             setPlayRoundLoading(false);
           }); 
         }
@@ -502,6 +535,7 @@ const App = () => {
   useEffect(() => {
     checkIfWalletIsConnected();
     getMints();
+    getUsersCurrentRound();
     checkIfDeadOrAlive();
     grabtokenURI();
   })
@@ -619,23 +653,32 @@ const App = () => {
   )
 
   function renderContent() {
-    console.log("play round loading check in Render, " + playRoundLoading);
     if (playRoundLoading) {
       return renderGameLoadingUI();
     } else if (gameOpen) {
       if (currentAccount) {
-        return renderPlayGame();
+        if (userRound == 7) {
+          // winning screen UI #8
+        } else if (userRound == 0) {
+          // render dead UI #7
+        } else if (userRound == currentRound) {
+          return renderPlayGame(); // view #5
+        } else if (userRound > currentRound) {
+          // render alive UI #6
+        } else {
+          // you missed a round UI #9
+        }
       } else {
-        return renderNotConnectedContainerPostGame();
+        return renderNotConnectedContainerPostGame(); // view #4
       }
     } else if (currentAccount) {
         if (tokenURI) {
-          return renderNoMintUI();
+          return renderNoMintUI(); // view #3
         } else {
-          return renderMintUI();
+          return renderMintUI(); // view #2
         }
     } else {
-        return renderNotConnectedContainerPreGame();
+        return renderNotConnectedContainerPreGame(); // view #1
     }
   }
 
