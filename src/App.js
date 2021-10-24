@@ -360,7 +360,7 @@ const App = () => {
     }
     else { 
       // console.log("set round 0");
-      setCurrentRound(1);
+      setCurrentRound(0);
     }
   } 
 
@@ -554,7 +554,6 @@ const App = () => {
   */
 
   useEffect(() => {
-    setRound();
     haveWeMinted();
     clearTimer(getDeadTime(currentRound));
   }, [currentRound, clearTimer])
@@ -566,11 +565,14 @@ const App = () => {
   useEffect(() => {
     checkIfWalletIsConnected();
     getMints();
+    setRound();
     getUsersCurrentRound();
     checkIfDeadOrAlive();
     grabtokenURI();
     setImage();
   })
+
+  console.log(currentRound);
 
   // Set up Image
   const setImage = () => {
