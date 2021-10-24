@@ -21,13 +21,13 @@ const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 
 // Dates are set as the END of that round
-const MINT_DATE = new Date("2021-10-25T12:00:00").getTime();
-var dateRound1 = new Date('2021-10-26T12:00:00').getTime(); 
-var dateRound2 = new Date('2021-10-27T12:00:00').getTime();
-var dateRound3 = new Date('2021-10-28T12:00:00').getTime();
-var dateRound4 = new Date('2021-10-29T12:00:00').getTime();
-var dateRound5 = new Date('2021-10-30T12:00:00').getTime();
-var dateRound6 = new Date('2021-10-31T12:00:00').getTime();
+const MINT_DATE = new Date("2021-10-25T11:59:59").getTime();
+var dateRound1 = new Date('2021-10-26T11:59:59').getTime(); 
+var dateRound2 = new Date('2021-10-27T11:59:59').getTime();
+var dateRound3 = new Date('2021-10-28T11:59:59').getTime();
+var dateRound4 = new Date('2021-10-29T11:59:59').getTime();
+var dateRound5 = new Date('2021-10-30T11:59:59').getTime();
+var dateRound6 = new Date('2021-10-31T11:59:59').getTime();
 var dateNow = new Date().getTime();
 
 const getDeadTime = (currentRound) => {
@@ -845,12 +845,12 @@ const App = () => {
               <img src={symbols} className="symbols"></img>
               <div className="faqQuestion">How long does each round last? </div>
               <div className="faqAnswer">Each round lasts for a day. You need to 'Play Round' while the round is open to be counted. If you do not 'Play Round', your Octopus will die automatically.
-              <br/>Round 1 is from Oct 25 12am - 11:59pm
-              <br/>Round 2 is from Oct 26 12am - 11:59pm
-              <br/>Round 3 is from Oct 27 12am - 11:59pm
-              <br/>Round 4 is from Oct 28 12am - 11:59pm
-              <br/>Round 5 is from Oct 29 12am - 11:59pm
-              <br/>Round 6 is from Oct 30 12am - 11:59pm
+              <br/>Round 1 is from Oct 25 12:00pm - Oct 26 11:59am
+              <br/>Round 2 is from Oct 26 12:00pm - Oct 27 11:59am
+              <br/>Round 3 is from Oct 27 12:00pm - Oct 28 11:59am
+              <br/>Round 4 is from Oct 28 12:00pm - Oct 29 11:59am
+              <br/>Round 5 is from Oct 29 12:00pm - Oct 30 11:59am
+              <br/>Round 6 is from Oct 30 12:00pm - Oct 31 11:59am
               </div>
             </div>
             <div className="faqItem">
