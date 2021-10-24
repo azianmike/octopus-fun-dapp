@@ -210,6 +210,10 @@
   font-weight: bold;
 }
 
+.timer-invisible {
+  color:  black;
+}
+
 /* KeyFrames */
 @-webkit-keyframes gradient-animation {
   0% {

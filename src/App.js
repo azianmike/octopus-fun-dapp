@@ -19,7 +19,7 @@ const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 var img_file;
 
-const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
+const MINT_DATE = new Date("2021-10-24T19:00:00").getTime();
 var dateRound1 = new Date('2021-10-26T10:00:00').getTime();
 var dateRound2 = new Date('2021-10-27T10:00:00').getTime();
 var dateRound3 = new Date('2021-10-28T10:00:00').getTime();
@@ -56,7 +56,7 @@ const App = () => {
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
   const [hasNFT, setNFT] = useState(false);
-  const [timer, setTimer] = useState('00d 00h 00m 00s');
+  const [timer, setTimer] = useState("loading");
 
   // const img_file = useState();
 
@@ -276,6 +276,32 @@ const App = () => {
     }
   } 
 
+  /*---------------------Get Address from Toked ID--------*/
+
+//   const getMints = useCallback(async () => {
+//     try {
+//       const { ethereum } = window;
+//       if (ethereum) {
+//         console.log("ETHEREUM READY TO MINT");
+//         const web3 = new Web3(ethereum);
+//         const id = await web3.eth.net.getId();
+//         // const deployedNetwork = MyNFT.networks[id];
+//         const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+//         const addresses = await web3.eth.getAccounts();
+//         const currentMints = await contract.methods.aliveNFTCount().call();
+//         // const provider = new ethers.providers.Web3Provider(ethereum);
+//         // const signer = provider.getSigner();
+//         // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
+//         // console.log(connectedContract);
+//         // const currentMints = await connectedContract.aliveNFTCount(); 
+//         console.log(currentMints);
+//         setCurrentMints(currentMints);
+//       } 
+//     } catch (error) {
+//     console.log(error)
+//     }
+// }, [setCurrentMints]);
+
   /*----------------------PLAY ROUND---------------------------*/
   const playRound = () => {
     console.log("inside play round");
@@ -418,6 +444,26 @@ const App = () => {
     img_file={squid};
   }
 
+  // function renderContent() {
+  //   if (gameOpen) {
+  //     if (currentAccount) {
+  //       return renderPlayGame();
+  //     } else {
+  //       return renderNotConnectedContainer();
+  //     }
+  //   } else {
+  //     if (currentAccount) {
+  //       if (hasNFT) {
+  //         return renderNoMintUI();
+  //       } else {
+  //         return renderMintUI();
+  //       }
+  //     } else {
+  //       return renderNotConnectedContainer();
+  //     }
+  //   }
+  // }
+
   useEffect(() => {
     setImage();
   }, [])
@@ -480,11 +526,16 @@ const App = () => {
     }
   }
 
+  let timerClass = "timer"
+  if (timer === "loading") {
+    timerClass = "timer timer-invisible"
+  }
+
   return (
     <div className="App">
       <div className="container">
         
-          <div className="menu"> 
+          <div className="menu">
             <div className="menuItems">About</div>
             <div className="menuItems">FAQ</div>
             <div className="menuItems">Connect Wallet</div>
@@ -495,7 +546,7 @@ const App = () => {
             </div>
             <div className="topRight">
               <p className="header gradient-text">Octopus Game</p>
-              <p className="timer">Mint starts in {timer}</p>
+              <p className={timerClass}>{timer}</p>
               <p className="sub-text">456 Octopi. 6 Rounds. 1 Massive Prize. Will you survive?</p>
               <div> 
                 {renderContent()}
