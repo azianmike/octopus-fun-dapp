@@ -21,7 +21,7 @@ const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 
 // Dates are set as the END of that round
-const MINT_DATE = new Date("2021-10-23T00:00:00").getTime();
+const MINT_DATE = new Date("2021-10-24T23:59:00").getTime();
 var dateRound1 = new Date('2021-10-25T23:59:00').getTime(); 
 var dateRound2 = new Date('2021-10-26T23:59:00').getTime();
 var dateRound3 = new Date('2021-10-27T23:59:00').getTime();
