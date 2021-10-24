@@ -19,7 +19,7 @@ const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 var img_file;
 
-const MINT_DATE = new Date("2021-10-24T19:00:00").getTime();
+const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
 var dateRound1 = new Date('2021-10-26T10:00:00').getTime();
 var dateRound2 = new Date('2021-10-27T10:00:00').getTime();
 var dateRound3 = new Date('2021-10-28T10:00:00').getTime();
@@ -507,41 +507,75 @@ const App = () => {
   }, [])
 
   // Render Methods
-  const renderNotConnectedContainer = () => (
-    <div className="walletUI">
-      <button onClick={connectWallet} className="cta-button connect-wallet-button">
-        Connect to Wallet
-      </button>
-      <br></br>
-      <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p>  
+  const renderNotConnectedContainerPreGame = () => (
+    <div className="topRight">
+      <p className="header gradient-text">Octopus Game</p>
+      <p className={timerClass}>{timer}</p>
+      <p className="sub-text">Until Minting Ends</p>
+      <div className="walletUI">
+        <button onClick={connectWallet} className="cta-button connect-wallet-button">
+          Connect to Wallet
+        </button>
+        <br></br>
+        <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p>  
+      </div>
+    </div>
+  );
+
+  const renderNotConnectedContainerPostGame = () => (
+    <div className="topRight">
+      <p className="header gradient-text">Octopus Game</p>
+      <p className={timerClass}>{timer}</p>
+      <p className="sub-text">Until End of Round</p>
+      <div className="walletUI">
+        <button onClick={connectWallet} className="cta-button connect-wallet-button">
+          Connect to Wallet to Play
+        </button>
+      </div>
     </div>
   );
 
   const renderMintUI = () => (
-    <div className="mintUI">
-      <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
-        Mint me an Octopus
-      </button>
-      <br></br>
-      <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
+    <div className="topRight">
+      <p className="header gradient-text">Octopus Game</p>
+      <p className={timerClass}>{timer}</p>
+      <p className="sub-text">Until Minting Ends</p>
+      <div className="mintUI">
+        <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
+          Mint me an Octopus
+        </button>
+        <br></br>
+        <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
+      </div>
     </div>
   )
 
   const renderNoMintUI = () => (
-    <div className="mintUI">
-      <button className="cta-button no-mint">
-        Limit 1 Octopus per wallet. You already have one!
-      </button>
-      <br></br>
-      <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
+    <div className="topRight">
+      <p className="header gradient-text">Octopus Game</p>
+      <p className={timerClass}>{timer}</p>
+      <p className="sub-text">Until Minting Ends</p>
+      <div className="mintUI">
+        <button className="cta-button no-mint">
+          Limit 1 Octopus. You have one!
+        </button>
+        <br></br>
+        <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
+      </div>
     </div>
+
   )
 
   const renderPlayGame = () => (
-    <div className="body-container">
-        <br></br>
-        <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
-    </div> 
+    <div className="topRight">
+      <p className="header gradient-text">Octopus Game</p>
+      <p className={timerClass}>{timer}</p>
+      <p className="sub-text">Until End of Round</p>
+      <div className="body-container">
+          <br></br>
+          <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
+      </div> 
+    </div>
   )
 
   function renderContent() {
@@ -549,7 +583,7 @@ const App = () => {
       if (currentAccount) {
         return renderPlayGame();
       } else {
-        return renderNotConnectedContainer();
+        return renderNotConnectedContainerPostGame();
       }
     } else {
       if (currentAccount) {
@@ -559,7 +593,7 @@ const App = () => {
           return renderMintUI();
         }
       } else {
-        return renderNotConnectedContainer();
+        return renderNotConnectedContainerPreGame();
       }
     }
   }
@@ -582,14 +616,7 @@ const App = () => {
             <div className="topLeft">
               <img className="squidTop" src={squid} />
             </div>
-            <div className="topRight">
-              <p className="header gradient-text">Octopus Game</p>
-              <p className={timerClass}>{timer}</p>
-              <p className="sub-text">456 Octopi. 6 Rounds. 1 Massive Prize. Will you survive?</p>
-              <div> 
-                {renderContent()}
-              </div>
-            </div>
+{           renderContent()}
           </div>
           <div className="overview"> 
             <img className="overviewCircle" src={squid}></img>
