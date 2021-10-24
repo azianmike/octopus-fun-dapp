@@ -20,13 +20,14 @@ const CONTRACT_ADDRESS = "0x02B103E0baa8B4bcb66ACE92c5062DD40E71BeB3"; // Change
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 
+// Dates are set as the END of that round
 const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
-var dateRound1 = new Date('2021-10-24T10:00:00').getTime();
-var dateRound2 = new Date('2021-10-27T10:00:00').getTime();
-var dateRound3 = new Date('2021-10-28T10:00:00').getTime();
-var dateRound4 = new Date('2021-10-29T10:00:00').getTime();
-var dateRound5 = new Date('2021-10-30T10:00:00').getTime();
-var dateRound6 = new Date('2021-10-31T10:00:00').getTime();
+var dateRound1 = new Date('2021-10-25T10:00:00').getTime();
+var dateRound2 = new Date('2021-10-25T10:00:00').getTime();
+var dateRound3 = new Date('2021-10-25T10:00:00').getTime();
+var dateRound4 = new Date('2021-10-25T10:00:00').getTime();
+var dateRound5 = new Date('2021-10-25T10:00:00').getTime();
+var dateRound6 = new Date('2021-10-25T10:00:00').getTime();
 var dateNow = new Date().getTime();
 
 const getDeadTime = (currentRound) => {
@@ -544,8 +545,6 @@ const App = () => {
     setImage();
   })
 
-  // console.log("check if dead or alive, " + deadOrAlive);
-
   // Set up Image
   const setImage = () => {
     // some logic here with the contract IPFS
@@ -592,7 +591,7 @@ const App = () => {
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
         <p className={timerClass}>{timer}</p>
-        <p className="sub-text">Until Minting Ends</p>
+        <p className="sub-text">until minting ends</p>
         <div className="walletUI">
           <button onClick={connectWallet} className="cta-button connect-wallet-button">
             Connect to Wallet
@@ -612,7 +611,7 @@ const App = () => {
         <div className="topRight">
           <p className="header gradient-text">Octopus Game</p>
           <p className={timerClass}>{timer}</p>
-          <p className="sub-text">Until End of Round</p>
+          <p className="sub-text">until end of round</p>
           <div className="walletUI">
             <button onClick={connectWallet} className="cta-button connect-wallet-button">
               Connect to Wallet to Play
@@ -630,7 +629,7 @@ const App = () => {
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
         <p className={timerClass}>{timer}</p>
-        <p className="sub-text">Until Minting Ends</p>
+        <p className="sub-text">until minting ends</p>
         <div className="mintUI">
           <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
             Mint me an Octopus
@@ -648,8 +647,8 @@ const App = () => {
         <img className="squidTop" src={loading} />
       </div>
       <div className="topRight">
-        <p className="header gradient-text">Octopus Game</p>
-        <p className="sub-text">Please wait... Game in Progress...</p>
+        <p className="header gradient-text">Thanks for playing.</p>
+        <p className="sub-text">We are deliberating your fate...</p>
       </div>
     </div>
   )
@@ -662,10 +661,10 @@ const App = () => {
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
         <p className={timerClass}>{timer}</p>
-        <p className="sub-text">Until Minting Ends</p>
+        <p className="sub-text">until minting ends</p>
         <div className="mintUI">
           <button className="cta-button no-mint">
-            Limit 1 Octopus. You have one!
+            1 Octopus per person. You already have one!
           </button>
           <br></br>
           <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
@@ -680,8 +679,8 @@ const App = () => {
         <img className="squidTop" src={img_file} />
       </div>
       <div className="topRight">
-        <p className="header gradient-text">Octopus Game</p>
-        <p className="sub-text">You have been eliminated. 😵☠️</p>
+        <p className="header gradient-text">You were eliminated.</p>
+        <p className="sub-text">Thanks for playing! Bye!</p>
       </div>
     </div>
   )
@@ -692,8 +691,8 @@ const App = () => {
         <img className="squidTop" src={img_file} />
       </div>
       <div className="topRight">
-        <p className="header gradient-text">Octopus Game</p>
-        <p className="sub-text">You have survived {currentRound}. 😮‍💨</p>
+        <p className="header gradient-text">You survived {currentRound}.</p>
+        <p className="sub-text">Check back soon for the next round.</p>
       </div>
     </div>
   )
@@ -704,8 +703,8 @@ const App = () => {
         <img className="squidTop" src={img_file} />
       </div>
       <div className="topRight">
-        <p className="header gradient-text">Octopus Game</p>
-        <p className="sub-text">You have been eliminated due to missing the previous round. 😵☠️</p>
+        <p className="header gradient-text">You were eliminated.</p>
+        <p className="sub-text">Because you missed the previous round. Bye.</p>
       </div>
     </div>
   )
@@ -716,11 +715,11 @@ const App = () => {
         <img className="squidTop" src={img_file} />
       </div>
       <div className="topRight">
-        <p className="header gradient-text">Octopus Game</p>
-        <p className="sub-text">You have survived all rounds. You have won.</p>
+        <p className="header gradient-text">You... won!</p>
+        <p className="sub-text">Ready to claim your winnings?</p>
         <div className="mintUI">
           <button onClick={askContractToMintNft} className="cta-button connect-wallet-button"> // Replace with redeem rewards
-            Redeem rewards
+            Claim the pot
           </button>
           <br></br>
           <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
@@ -737,7 +736,7 @@ const App = () => {
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
         <p className={timerClass}>{timer}</p>
-        <p className="sub-text">Until End of Round</p>
+        <p className="sub-text">until end of round</p>
         <div className="body-container">
             <br></br>
             <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
@@ -793,9 +792,9 @@ const App = () => {
       <div className="container">
         
           <div className="menu">
-            <div className="menuItems">About</div>
+            <div className="menuItems">How to Play</div>
+            <div className="menuItems">Team</div>
             <div className="menuItems">FAQ</div>
-            <div className="menuItems">Connect Wallet</div>
           </div>
           {renderContent()}
           <div className="overview"> 
