@@ -184,6 +184,7 @@ const App = () => {
         const addresses = await web3.eth.getAccounts();
         var ipfs_uri = IPFS[currentMints];
         console.log(ipfs_uri);
+        console.log("currentaccount", currentAccount);
         contract.methods.mintNFT(currentAccount, ipfs_uri).send({from:currentAccount, value:amountToSend}).then( function( info ) { 
           console.log("mint info: ", info);
           console.log("token ID is ", info.events.Transfer.returnValues.tokenId);
@@ -289,6 +290,8 @@ const App = () => {
         const web3 = new Web3(ethereum);
         const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
         console.log("Connected Contract", contract);
+
+        console.log("current accont", currentAccount)
         
         if (currentRound===1) {
           console.log("WE ENTEREED CURRENT ROUND 1", currentRound);
@@ -492,7 +495,7 @@ const App = () => {
             </div>
             <div className="topRight">
               <p className="header gradient-text">Octopus Game</p>
-              <p className="timer">{timer}</p>
+              <p className="timer">Mint starts in {timer}</p>
               <p className="sub-text">456 Octopi. 6 Rounds. 1 Massive Prize. Will you survive?</p>
               <div> 
                 {renderContent()}
@@ -521,7 +524,14 @@ const App = () => {
             <div className="faqItem">
               <img src={symbols} className="symbols"></img>
               <div className="faqQuestion">How long does each round last? </div>
-              <div className="faqAnswer">Each round lasts for a day. You need to 'Play Round' within the day to be counted. If you do not 'Play Round', your Octopus will die automatically.</div>
+              <div className="faqAnswer">Each round lasts for a day. You need to 'Play Round' while the round is open to be counted. If you do not 'Play Round', your Octopus will die automatically.
+              <br/>Round 1 is from Oct 25 12am - 11:59pm
+              <br/>Round 2 is from Oct 26 12am - 11:59pm
+              <br/>Round 3 is from Oct 27 12am - 11:59pm
+              <br/>Round 4 is from Oct 28 12am - 11:59pm
+              <br/>Round 5 is from Oct 29 12am - 11:59pm
+              <br/>Round 6 is from Oct 30 12am - 11:59pm
+              </div>
             </div>
             <div className="faqItem">
               <img src={symbols} className="symbols"></img>
