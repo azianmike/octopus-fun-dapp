@@ -21,13 +21,13 @@ const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 
 // Dates are set as the END of that round
-const MINT_DATE = new Date("2021-10-24T23:59:00").getTime();
-var dateRound1 = new Date('2021-10-25T23:59:00').getTime(); 
-var dateRound2 = new Date('2021-10-26T23:59:00').getTime();
-var dateRound3 = new Date('2021-10-27T23:59:00').getTime();
-var dateRound4 = new Date('2021-10-28T23:59:00').getTime();
-var dateRound5 = new Date('2021-10-29T23:59:00').getTime();
-var dateRound6 = new Date('2021-10-30T23:59:00').getTime();
+const MINT_DATE = new Date("2021-10-25T12:00:00").getTime();
+var dateRound1 = new Date('2021-10-26T12:00:00').getTime(); 
+var dateRound2 = new Date('2021-10-27T12:00:00').getTime();
+var dateRound3 = new Date('2021-10-28T12:00:00').getTime();
+var dateRound4 = new Date('2021-10-29T12:00:00').getTime();
+var dateRound5 = new Date('2021-10-30T12:00:00').getTime();
+var dateRound6 = new Date('2021-10-31T12:00:00').getTime();
 var dateNow = new Date().getTime();
 
 const getDeadTime = (currentRound) => {
@@ -827,7 +827,7 @@ const App = () => {
             <div className="overviewBox">
               <p className="header gradient-text">How to Play</p>
               <div className="overviewInstructions">
-                <p className="overviewText">1. Mint your NFT. Each minter puts 0.1ETH into the prize pool. Minting for SPC happens from <b>10/24/2021 12:00PT - 10/25/2021 11:59PM.</b></p>
+                <p className="overviewText">1. Mint your NFT. Each minter puts 0.1ETH into the prize pool. Minting for SPC happens from <b>10/24/2021 12:00PT - 10/25/2021 12:00PT.</b></p>
                 <p className="overviewText">2. When each round opens, click "Play Game" to get your octopus to compete. Your octopus will either win (in which case you can mint in future rounds) or get eliminated.</p>
                 <p className="overviewText">3. All players will keep playing for <b>6 rounds</b>. Each round lasts for <b>24 hours.</b></p>
                 <p className="overviewText">4. The last player(s) standing will <b>split the pot of ETH.</b></p>
