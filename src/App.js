@@ -55,7 +55,6 @@ const App = () => {
   const [totalPlayers, setTotalPlayers] = useState();
   const [currentRound, setCurrentRound] = useState(0); 
   const [currentMints, setCurrentMints] = useState();
-<<<<<<< HEAD
   const [deadOrAlive, setDeadOrAlive] = useState(false);
   const [hasNFT, setNFT] = useState(false);
   const [timer, setTimer] = useState("loading");
