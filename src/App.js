@@ -572,8 +572,6 @@ const App = () => {
     setImage();
   })
 
-  console.log(currentRound);
-
   // Set up Image
   const setImage = () => {
     // some logic here with the contract IPFS
