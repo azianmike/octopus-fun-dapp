@@ -20,7 +20,7 @@ const CONTRACT_ADDRESS = "0x02B103E0baa8B4bcb66ACE92c5062DD40E71BeB3"; // Change
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 
-const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
+const MINT_DATE = new Date("2021-10-24T19:00:00").getTime();
 var dateRound1 = new Date('2021-10-26T10:00:00').getTime();
 var dateRound2 = new Date('2021-10-27T10:00:00').getTime();
 var dateRound3 = new Date('2021-10-28T10:00:00').getTime();
