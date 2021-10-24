@@ -13,7 +13,7 @@ const TWITTER_HANDLE = '__mikareyes';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
-const CONTRACT_ADDRESS = "0x8dD2be632a4c6fb2C0C7650a185AC0aeFe06CAEd"; // Change Address
+const CONTRACT_ADDRESS = "0x4d8F4BdDe1B3F2CCe62F9CCaB4C9F5D37C218DD4"; // Change Address
 
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
@@ -241,21 +241,23 @@ const App = () => {
  // OCTOPUS FUN: KEEP THIS
   /* Get current number of mints*/
   const checkIfDeadOrAlive = useCallback(async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const web3 = new Web3(ethereum);
-        const id = await web3.eth.net.getId();
-        // const deployedNetwork = MyNFT.networks[id];
-        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
-        const addresses = await web3.eth.getAccounts();
-        // console.log("Current account is " + currentAccount);
-        const currentMints = await contract.methods.checkIfPlayerIsAlive(addresses[0]).call().then(function( deadOrAliveFromContract ) { 
-          setDeadOrAlive(deadOrAliveFromContract);
-        });
-      } 
-    } catch (error) {
-    console.log(error)
+    if (currentAccount) {
+      try {
+        const { ethereum } = window;
+        if (ethereum) {
+          const web3 = new Web3(ethereum);
+          const id = await web3.eth.net.getId();
+          // const deployedNetwork = MyNFT.networks[id];
+          const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+          const addresses = await web3.eth.getAccounts();
+          // console.log("Current account is " + currentAccount);
+          const currentMints = await contract.methods.checkIfPlayerIsAlive(addresses[0]).call().then(function( deadOrAliveFromContract ) { 
+            setDeadOrAlive(deadOrAliveFromContract);
+          });
+        } 
+      } catch (error) {
+      console.log(error)
+      }
     }
   });
 
@@ -457,7 +459,6 @@ const App = () => {
   */
 
   useEffect(() => {
-    checkIfWalletIsConnected();
     setRound();
     haveWeMinted();
     clearTimer(getDeadTime(currentRound));
@@ -468,6 +469,8 @@ const App = () => {
   }, [getTotalPlayers])
 
   useEffect(() => {
+    checkIfWalletIsConnected();
+    getMints();
     checkIfDeadOrAlive();
     grabtokenURI();
   })
