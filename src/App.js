@@ -550,13 +550,13 @@ const App = () => {
   const setImage = () => {
     // some logic here with the contract IPFS
     // img_file = " https://gateway.pinata.cloud/ipfs/QmWy46X5QpVA4DEVtPebddD4cBmKvCES1um6yCo1G7PuKE";
-    if (!gameOpen && !deadOrAlive) {
+    if (!gameOpen && !deadOrAlive) { // if game hasn't started, and user is dead (doesn't have squid), show them the next squid that they'd mint
       setImageFile(IPFS[currentMints]);
-    } else if (!gameOpen && deadOrAlive) {
+    } else if (!gameOpen && deadOrAlive) { // if game hasn't started, and user has a squid, show them their squid.
       setImageFile(tokenURI);
-    } else if (gameOpen && !deadOrAlive) {
+    } else if (gameOpen && !deadOrAlive) { // game has started and their squid has died, show them the death image.
       setImageFile(death);
-    } else if (gameOpen && deadOrAlive) {
+    } else if (gameOpen && deadOrAlive) { // game has started and their squid is alive, show them their squid.
       setImageFile(tokenURI);
     } else {
       setImageFile(squid);
