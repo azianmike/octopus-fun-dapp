@@ -244,23 +244,20 @@ const App = () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
-        console.log("Checking if player is dead or alive!");
         const web3 = new Web3(ethereum);
         const id = await web3.eth.net.getId();
         // const deployedNetwork = MyNFT.networks[id];
         const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
         const addresses = await web3.eth.getAccounts();
         // console.log("Current account is " + currentAccount);
-        console.log("Addresses is " + addresses[0]);
         const currentMints = await contract.methods.checkIfPlayerIsAlive(addresses[0]).call().then(function( deadOrAliveFromContract ) { 
-          console.log("alive status is ", deadOrAliveFromContract);
           setDeadOrAlive(deadOrAliveFromContract);
         });
       } 
     } catch (error) {
     console.log(error)
     }
-  }, [setDeadOrAlive]);
+  });
 
   // OCTOPUS FUN: KEEP THIS
   /* Gets total mint supply */ 
@@ -314,26 +311,28 @@ const App = () => {
   /*---------------------Get TokedID from Address--------------------*/
 
   const grabtokenURI = useCallback(async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const web3 = new Web3(ethereum);
-        const id = await web3.eth.net.getId();
-        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
-        const addresses = await web3.eth.getAccounts();
-        console.log(currentAccount);
-        const contracttokenURI = await contract.methods.getTokenURIFromAddress(currentAccount).call();
-        // const provider = new ethers.providers.Web3Provider(ethereum);
-        // const signer = provider.getSigner();
-        // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
-        // console.log(connectedContract);
-        // const currentMints = await connectedContract.aliveNFTCount(); 
-        console.log("up next is the token");
-        console.log(contracttokenURI);
-        setTokenURI(contracttokenURI);
-      } 
-    } catch (error) {
-      console.log(error)
+    if (deadOrAlive) {
+      try {
+        const { ethereum } = window;
+        if (ethereum) {
+          const web3 = new Web3(ethereum);
+          const id = await web3.eth.net.getId();
+          const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+          const addresses = await web3.eth.getAccounts();
+          console.log(currentAccount);
+          const contracttokenURI = await contract.methods.getTokenURIFromAddress(currentAccount).call();
+          // const provider = new ethers.providers.Web3Provider(ethereum);
+          // const signer = provider.getSigner();
+          // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
+          // console.log(connectedContract);
+          // const currentMints = await connectedContract.aliveNFTCount(); 
+          console.log("up next is the token");
+          console.log(contracttokenURI);
+          setTokenURI(contracttokenURI);
+        } 
+      } catch (error) {
+        console.log(error)
+      }
     }
 });
 
@@ -469,12 +468,7 @@ const App = () => {
   }, [getTotalPlayers])
 
   useEffect(() => {
-    checkIfDeadOrAlive()
-  }, [checkIfDeadOrAlive])
-
-  console.log("dead or alive state is " + deadOrAlive);
-
-  useEffect(() => {
+    checkIfDeadOrAlive();
     grabtokenURI();
   })
 
