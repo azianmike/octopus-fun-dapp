@@ -20,7 +20,7 @@ const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 var img_file;
 
-const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
+const MINT_DATE = new Date("2021-10-25T19:00:00").getTime();
 var dateRound1 = new Date('2021-10-26T10:00:00').getTime();
 var dateRound2 = new Date('2021-10-27T10:00:00').getTime();
 var dateRound3 = new Date('2021-10-28T10:00:00').getTime();
@@ -241,22 +241,24 @@ const App = () => {
 
   /* Get current round of player*/
   const getUsersCurrentRound = useCallback(async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        // console.log("ETHEREUM READY TO MINT");
-        const web3 = new Web3(ethereum);
-        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
-        const currentMints = contract.methods.aliveNFTs(currentAccount).call().then(function( uRound ) { 
-            if (uRound == 0) {
-              setUserRound(0);
-            } else {
-              setUserRound(uRound);
-            }
-        });
-      } 
-    } catch (error) {
-    console.log(error)
+    if (currentAccount) {
+        try {
+        const { ethereum } = window;
+        if (ethereum) {
+          // console.log("ETHEREUM READY TO MINT");
+          const web3 = new Web3(ethereum);
+          const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+          const currentMints = contract.methods.aliveNFTs(currentAccount).call().then(function( uRound ) { 
+              if (uRound == 0) {
+                setUserRound(0);
+              } else {
+                setUserRound(uRound);
+              }
+          });
+        } 
+      } catch (error) {
+        console.log(error)
+      }
     }
   });
 
@@ -575,80 +577,109 @@ const App = () => {
 
   // Render Methods
   const renderNotConnectedContainerPreGame = () => (
-    <div className="topRight">
-      <p className="header gradient-text">Octopus Game</p>
-      <p className={timerClass}>{timer}</p>
-      <p className="sub-text">Until Minting Ends</p>
-      <div className="walletUI">
-        <button onClick={connectWallet} className="cta-button connect-wallet-button">
-          Connect to Wallet
-        </button>
-        <br></br>
-        <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p>  
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={squid} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Octopus Game</p>
+        <p className={timerClass}>{timer}</p>
+        <p className="sub-text">Until Minting Ends</p>
+        <div className="walletUI">
+          <button onClick={connectWallet} className="cta-button connect-wallet-button">
+            Connect to Wallet
+          </button>
+          <br></br>
+          <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p>  
+        </div>
       </div>
     </div>
   );
 
   const renderNotConnectedContainerPostGame = () => (
-    <div className="topRight">
-      <p className="header gradient-text">Octopus Game</p>
-      <p className={timerClass}>{timer}</p>
-      <p className="sub-text">Until End of Round</p>
-      <div className="walletUI">
-        <button onClick={connectWallet} className="cta-button connect-wallet-button">
-          Connect to Wallet to Play
-        </button>
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={squid} />
       </div>
+        <div className="topRight">
+          <p className="header gradient-text">Octopus Game</p>
+          <p className={timerClass}>{timer}</p>
+          <p className="sub-text">Until End of Round</p>
+          <div className="walletUI">
+            <button onClick={connectWallet} className="cta-button connect-wallet-button">
+              Connect to Wallet to Play
+            </button>
+          </div>
+        </div>
     </div>
   );
 
   const renderMintUI = () => (
-    <div className="topRight">
-      <p className="header gradient-text">Octopus Game</p>
-      <p className={timerClass}>{timer}</p>
-      <p className="sub-text">Until Minting Ends</p>
-      <div className="mintUI">
-        <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
-          Mint me an Octopus
-        </button>
-        <br></br>
-        <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={squid} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Octopus Game</p>
+        <p className={timerClass}>{timer}</p>
+        <p className="sub-text">Until Minting Ends</p>
+        <div className="mintUI">
+          <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
+            Mint me an Octopus
+          </button>
+          <br></br>
+          <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
+        </div>
       </div>
     </div>
   )
 
   const renderGameLoadingUI = () => (
-    <div className="topRight">
-      <p className="header gradient-text">Octopus Game</p>
-      <p className="sub-text">Please wait... Game in Progress...</p>
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={squid} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Octopus Game</p>
+        <p className="sub-text">Please wait... Game in Progress...</p>
+      </div>
     </div>
   )
 
   const renderNoMintUI = () => (
-    <div className="topRight">
-      <p className="header gradient-text">Octopus Game</p>
-      <p className={timerClass}>{timer}</p>
-      <p className="sub-text">Until Minting Ends</p>
-      <div className="mintUI">
-        <button className="cta-button no-mint">
-          Limit 1 Octopus. You have one!
-        </button>
-        <br></br>
-        <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={squid} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Octopus Game</p>
+        <p className={timerClass}>{timer}</p>
+        <p className="sub-text">Until Minting Ends</p>
+        <div className="mintUI">
+          <button className="cta-button no-mint">
+            Limit 1 Octopus. You have one!
+          </button>
+          <br></br>
+          <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
+        </div>
       </div>
     </div>
-
   )
 
   const renderPlayGame = () => (
-    <div className="topRight">
-      <p className="header gradient-text">Octopus Game</p>
-      <p className={timerClass}>{timer}</p>
-      <p className="sub-text">Until End of Round</p>
-      <div className="body-container">
-          <br></br>
-          <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
-      </div> 
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={squid} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Octopus Game</p>
+        <p className={timerClass}>{timer}</p>
+        <p className="sub-text">Until End of Round</p>
+        <div className="body-container">
+            <br></br>
+            <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
+        </div> 
+      </div>
     </div>
   )
 
@@ -696,12 +727,7 @@ const App = () => {
             <div className="menuItems">FAQ</div>
             <div className="menuItems">Connect Wallet</div>
           </div>
-          <div className="top">
-            <div className="topLeft">
-              <img className="squidTop" src={squid} />
-            </div>
-            {renderContent()}
-          </div>
+          {renderContent()}
           <div className="overview"> 
             <img className="overviewCircle" src={squid}></img>
             <div className="overviewBox">
