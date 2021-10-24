@@ -15,19 +15,19 @@ const TWITTER_HANDLE = '__mikareyes';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
-const CONTRACT_ADDRESS = "0x02B103E0baa8B4bcb66ACE92c5062DD40E71BeB3"; // Change Address
+const CONTRACT_ADDRESS = "0xFA6E973A25fD4B91b7fa1734bf42826c39172044"; // Change Address
 
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 
 // Dates are set as the END of that round
-const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
-var dateRound1 = new Date('2021-10-25T10:00:00').getTime();
-var dateRound2 = new Date('2021-10-25T10:00:00').getTime();
-var dateRound3 = new Date('2021-10-25T10:00:00').getTime();
-var dateRound4 = new Date('2021-10-25T10:00:00').getTime();
-var dateRound5 = new Date('2021-10-25T10:00:00').getTime();
-var dateRound6 = new Date('2021-10-25T10:00:00').getTime();
+const MINT_DATE = new Date("2021-10-23T00:00:00").getTime();
+var dateRound1 = new Date('2021-10-25T23:59:00').getTime(); 
+var dateRound2 = new Date('2021-10-26T23:59:00').getTime();
+var dateRound3 = new Date('2021-10-27T23:59:00').getTime();
+var dateRound4 = new Date('2021-10-28T23:59:00').getTime();
+var dateRound5 = new Date('2021-10-29T23:59:00').getTime();
+var dateRound6 = new Date('2021-10-30T23:59:00').getTime();
 var dateNow = new Date().getTime();
 
 const getDeadTime = (currentRound) => {
@@ -61,6 +61,7 @@ const App = () => {
   const [hasNFT, setNFT] = useState(false);
   const [timer, setTimer] = useState("loading");
   const [tokenURI, setTokenURI] = useState();
+  const [mintLoading, setMintLoading] = useState(false);
   const [playRoundLoading, setPlayRoundLoading] = useState(false);
   const [userRound, setUserRound] = useState(1);
   const [img_file, setImageFile] = useState();
@@ -193,12 +194,38 @@ const App = () => {
         var ipfs_uri = IPFS[currentMints];
         console.log(ipfs_uri);
         console.log("currentaccount", currentAccount);
+        setMintLoading(true);
         contract.methods.mintNFT(currentAccount, ipfs_uri).send({from:currentAccount, value:amountToSend}).then( function( info ) { 
           console.log("mint info: ", info);
           console.log("token ID is ", info.events.Transfer.returnValues.tokenId);
+          setMintLoading(false);
         });    
 
         // getMints();
+
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  })
+
+    /*----------------------MINT---------------------------*/
+  const checkIfWinnerAndPayout = useCallback(async () => {
+    // This function doesn't yet work
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+
+        const web3 = new Web3(ethereum);
+        const id = await web3.eth.net.getId();
+        // const deployedNetwork = MyNFT.networks[id];
+        const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
+        const addresses = await web3.eth.getAccounts();
+        contract.methods.checkIfWinnerAndPayout(currentAccount).send({from:currentAccount}).then( function( info ) { 
+          console.log("checkIfWinnerAndPayout info: ", info);
+        });    
 
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -221,7 +248,7 @@ const App = () => {
         // const deployedNetwork = MyNFT.networks[id];
         const contract = new web3.eth.Contract(MyNFT, CONTRACT_ADDRESS);
         const addresses = await web3.eth.getAccounts();
-        const currentMints = await contract.methods.aliveNFTCount().call();
+        const currentMints = await contract.methods.getTotalNumberOfMints().call();
         // const provider = new ethers.providers.Web3Provider(ethereum);
         // const signer = provider.getSigner();
         // const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT, signer);
@@ -562,26 +589,6 @@ const App = () => {
     }
   }
 
-  // function renderContent() {
-  //   if (gameOpen) {
-  //     if (currentAccount) {
-  //       return renderPlayGame();
-  //     } else {
-  //       return renderNotConnectedContainer();
-  //     }
-  //   } else {
-  //     if (currentAccount) {
-  //       if (tokenURI) {
-  //         return renderNoMintUI();
-  //       } else {
-  //         return renderMintUI();
-  //       }
-  //     } else {
-  //       return renderNotConnectedContainer();
-  //     }
-  //   }
-  // }
-
   // Render Methods
   const renderNotConnectedContainerPreGame = () => (
     <div className="top">
@@ -653,6 +660,18 @@ const App = () => {
     </div>
   )
 
+    const renderMintLoadingUI = () => (
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={loading} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Thanks for entering.</p>
+        <p className="sub-text">We are minting your NFT player right now...</p>
+      </div>
+    </div>
+  )
+
   const renderNoMintUI = () => (
     <div className="top">
       <div className="topLeft">
@@ -718,9 +737,9 @@ const App = () => {
         <p className="header gradient-text">You... won!</p>
         <p className="sub-text">Ready to claim your winnings?</p>
         <div className="mintUI">
-          {/* <button onClick={askContractToSplitFunds} className="cta-button connect-wallet-button"> // Replace with redeem rewards
-            Redeem rewards
-          </button> */}
+          <button onClick={checkIfWinnerAndPayout} className="cta-button connect-wallet-button">
+            Claim the pot
+          </button>
           <br></br>
           <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
         </div>
@@ -739,7 +758,7 @@ const App = () => {
         <p className="sub-text">until end of round</p>
         <div className="body-container">
             <br></br>
-            <button onClick={playRound} className="cta-button connect-wallet-button">Play Round</button>
+            <button onClick={playRound} className="cta-button connect-wallet-button">Play Round {currentRound}</button>
         </div> 
       </div>
     </div>
@@ -754,7 +773,7 @@ const App = () => {
         if (userRound == 7) {
           // winning screen UI #8
           return renderWinningScreen();
-        } else if (userRound > 8) {
+        } else if (userRound == -1 || userRound > 8) {
           // render dead UI #7
           return renderDeadScreen();
         } else if (userRound == currentRound) {
@@ -766,6 +785,8 @@ const App = () => {
           return renderAliveScreen();
         } else {
           // you missed a round... UI #9
+          console.log("user round " + userRound)
+          console.log("current round " + currentRound)
           return renderDeadDueToMissingRound();
         }
       } else {
@@ -775,7 +796,11 @@ const App = () => {
         if (tokenURI) {
           return renderNoMintUI(); // view #3
         } else {
-          return renderMintUI(); // view #2
+          if(mintLoading == false) {  // There is no minting in progress, show mint UI screen
+            return renderMintUI(); // view #2
+          } else {  // There is a minting in progress, show loading screen
+            return renderMintLoadingUI();
+          }
         }
     } else {
         return renderNotConnectedContainerPreGame(); // view #1
