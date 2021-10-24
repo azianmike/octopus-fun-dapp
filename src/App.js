@@ -2,6 +2,7 @@ import './styles/App.css';
 import twitterLogo from './assets/twitter-logo.svg';
 import symbols from './assets/symbols.png';
 import squid from './assets/squid.png';
+import loading from './assets/loading.gif';
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { ethers } from "ethers";
 import MyNFT from './utils/MyNFT.json';
@@ -59,6 +60,7 @@ const App = () => {
   const [hasNFT, setNFT] = useState(false);
   const [timer, setTimer] = useState("loading");
   const [tokenURI, setTokenURI] = useState();
+  const [playRoundLoading, setPlayRoundLoading] = useState(false);
 
   // const img_file = useState();
 
@@ -358,45 +360,58 @@ const App = () => {
         const addresses = web3.eth.getAccounts();
         var ipfs_uri = IPFS[currentMints];
         if (currentRound===1) {
-          console.log("playing round 1")
+          console.log("playing round 1");
+          setPlayRoundLoading(true);
           contract.methods.playRound1(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            setPlayRoundLoading(false);
           }); 
+
         }
         else if (currentRound===2) {
-          console.log("playing round 2")
+          console.log("playing round 2");
+          setPlayRoundLoading(true);
           contract.methods.playRound2(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            setPlayRoundLoading(false);
           }); 
         }
         else if (currentRound===3) {
-          console.log("playing round 3")
+          console.log("playing round 3");
+          setPlayRoundLoading(true);
           contract.methods.playRound3(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            setPlayRoundLoading(false);
           }); 
         }
         else if (currentRound===4) {
-          console.log("playing round 4")
+          console.log("playing round 4");
+          setPlayRoundLoading(true);
           contract.methods.playRound4(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            setPlayRoundLoading(false);
           }); 
         }
         else if (currentRound===5) {
-          console.log("playing round 5")
+          console.log("playing round 5");
+          setPlayRoundLoading(true);
           contract.methods.playRound5(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            setPlayRoundLoading(false);
           }); 
         }
         else if (currentRound===6) {
-          console.log("playing round 6")
+          console.log("playing round 6");
+          setPlayRoundLoading(true);
           contract.methods.playRound6(currentAccount).send({from:currentAccount}).then( function( info ) { 
             console.log("return is : ", info);
             // Call function to check if player is dead or alive
+            setPlayRoundLoading(false);
           }); 
         }
         // For the "play round" button
@@ -406,7 +421,8 @@ const App = () => {
         console.log("Ethereum object doesn't exist!");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      setPlayRoundLoading(false);
     }
   }
 
@@ -490,6 +506,8 @@ const App = () => {
     grabtokenURI();
   })
 
+  console.log("check if dead or alive, " + deadOrAlive);
+
   // Set up Image
   const setImage = () => {
     // some logic here with the contract IPFS
@@ -565,6 +583,13 @@ const App = () => {
     </div>
   )
 
+  const renderGameLoadingUI = () => (
+    <div className="topRight">
+      <p className="header gradient-text">Octopus Game</p>
+      <p className="sub-text">Please wait... Game in Progress...</p>
+    </div>
+  )
+
   const renderNoMintUI = () => (
     <div className="topRight">
       <p className="header gradient-text">Octopus Game</p>
@@ -594,22 +619,23 @@ const App = () => {
   )
 
   function renderContent() {
-    if (gameOpen) {
+    console.log("play round loading check in Render, " + playRoundLoading);
+    if (playRoundLoading) {
+      return renderGameLoadingUI();
+    } else if (gameOpen) {
       if (currentAccount) {
         return renderPlayGame();
       } else {
         return renderNotConnectedContainerPostGame();
       }
-    } else {
-      if (currentAccount) {
+    } else if (currentAccount) {
         if (tokenURI) {
           return renderNoMintUI();
         } else {
           return renderMintUI();
         }
-      } else {
+    } else {
         return renderNotConnectedContainerPreGame();
-      }
     }
   }
 
@@ -631,7 +657,7 @@ const App = () => {
             <div className="topLeft">
               <img className="squidTop" src={squid} />
             </div>
-{           renderContent()}
+            {renderContent()}
           </div>
           <div className="overview"> 
             <img className="overviewCircle" src={squid}></img>
