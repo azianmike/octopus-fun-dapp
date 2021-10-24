@@ -21,7 +21,7 @@ const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
 
 const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
-var dateRound1 = new Date('2021-10-26T10:00:00').getTime();
+var dateRound1 = new Date('2021-10-24T10:00:00').getTime();
 var dateRound2 = new Date('2021-10-27T10:00:00').getTime();
 var dateRound3 = new Date('2021-10-28T10:00:00').getTime();
 var dateRound4 = new Date('2021-10-29T10:00:00').getTime();
@@ -674,6 +674,61 @@ const App = () => {
     </div>
   )
 
+  const renderDeadScreen = () => (
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={img_file} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Octopus Game</p>
+        <p className="sub-text">You have been eliminated. 😵☠️</p>
+      </div>
+    </div>
+  )
+
+  const renderAliveScreen = () => (
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={img_file} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Octopus Game</p>
+        <p className="sub-text">You have survived {currentRound}. 😮‍💨</p>
+      </div>
+    </div>
+  )
+
+  const renderDeadDueToMissingRound = () => (
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={img_file} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Octopus Game</p>
+        <p className="sub-text">You have been eliminated due to missing the previous round. 😵☠️</p>
+      </div>
+    </div>
+  )
+
+  const renderWinningScreen = () => (
+    <div className="top">
+      <div className="topLeft">
+        <img className="squidTop" src={img_file} />
+      </div>
+      <div className="topRight">
+        <p className="header gradient-text">Octopus Game</p>
+        <p className="sub-text">You have survived all rounds. You have won.</p>
+        <div className="mintUI">
+          <button onClick={askContractToMintNft} className="cta-button connect-wallet-button"> // Replace with redeem rewards
+            Redeem rewards
+          </button>
+          <br></br>
+          <p className="sub-text">{currentMints} Minted / {totalPlayers} Remaining </p> 
+        </div>
+      </div>
+    </div>
+  )
+
   const renderPlayGame = () => (
     <div className="top">
       <div className="topLeft">
@@ -692,20 +747,27 @@ const App = () => {
   )
 
   function renderContent() {
+
     if (playRoundLoading) {
       return renderGameLoadingUI();
-    } else if (gameOpen) {
+    } else if (gameOpen && userRound != 0) {
       if (currentAccount) {
         if (userRound == 7) {
           // winning screen UI #8
-        } else if (userRound == 0) {
+          return renderWinningScreen();
+        } else if (userRound > 8) {
           // render dead UI #7
+          return renderDeadScreen();
         } else if (userRound == currentRound) {
           return renderPlayGame(); // view #5
-        } else if (userRound > currentRound) {
+        } else if (userRound > currentRound && userRound < 7) {
           // render alive UI #6
+          console.log("user round " + userRound)
+          console.log("current round " + currentRound)
+          return renderAliveScreen();
         } else {
           // you missed a round UI #9
+          return renderDeadDueToMissingRound();
         }
       } else {
         return renderNotConnectedContainerPostGame(); // view #4
