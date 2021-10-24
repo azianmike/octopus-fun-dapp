@@ -3,6 +3,7 @@ import twitterLogo from './assets/twitter-logo.svg';
 import symbols from './assets/symbols.png';
 import squid from './assets/squid.png';
 import loading from './assets/loading.gif';
+import death from './assets/round1.jpeg';
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { ethers } from "ethers";
 import MyNFT from './utils/MyNFT.json';
@@ -14,13 +15,12 @@ const TWITTER_HANDLE = '__mikareyes';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = 'https://testnets.opensea.io/collection/your-snooty-coffee-order-g0czizq92i';
 const TOTAL_MINT_COUNT = 456;
-const CONTRACT_ADDRESS = "0xDE48802e3E71dE5dd704155be2AaEbdd639313EC"; // Change Address
+const CONTRACT_ADDRESS = "0x02B103E0baa8B4bcb66ACE92c5062DD40E71BeB3"; // Change Address
 
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(process.env.REACT_APP_PINATA_API_KEY, process.env.REACT_APP_PINATA_SECRET);
-var img_file;
 
-const MINT_DATE = new Date("2021-10-25T19:00:00").getTime();
+const MINT_DATE = new Date("2021-10-22T19:00:00").getTime();
 var dateRound1 = new Date('2021-10-26T10:00:00').getTime();
 var dateRound2 = new Date('2021-10-27T10:00:00').getTime();
 var dateRound3 = new Date('2021-10-28T10:00:00').getTime();
@@ -62,6 +62,7 @@ const App = () => {
   const [tokenURI, setTokenURI] = useState();
   const [playRoundLoading, setPlayRoundLoading] = useState(false);
   const [userRound, setUserRound] = useState(1);
+  const [img_file, setImageFile] = useState();
 
   // const img_file = useState();
 
@@ -540,15 +541,26 @@ const App = () => {
     getUsersCurrentRound();
     checkIfDeadOrAlive();
     grabtokenURI();
+    setImage();
   })
 
-  console.log("check if dead or alive, " + deadOrAlive);
+  // console.log("check if dead or alive, " + deadOrAlive);
 
   // Set up Image
   const setImage = () => {
     // some logic here with the contract IPFS
     // img_file = " https://gateway.pinata.cloud/ipfs/QmWy46X5QpVA4DEVtPebddD4cBmKvCES1um6yCo1G7PuKE";
-    img_file=squid;
+    if (!gameOpen && !deadOrAlive) {
+      setImageFile(IPFS[currentMints]);
+    } else if (!gameOpen && deadOrAlive) {
+      setImageFile(tokenURI);
+    } else if (gameOpen && !deadOrAlive) {
+      setImageFile(death);
+    } else if (gameOpen && deadOrAlive) {
+      setImageFile(tokenURI);
+    } else {
+      setImageFile(squid);
+    }
   }
 
   // function renderContent() {
@@ -570,10 +582,6 @@ const App = () => {
   //     }
   //   }
   // }
-
-  useEffect(() => {
-    setImage();
-  }, [])
 
   // Render Methods
   const renderNotConnectedContainerPreGame = () => (
@@ -637,7 +645,7 @@ const App = () => {
   const renderGameLoadingUI = () => (
     <div className="top">
       <div className="topLeft">
-        <img className="squidTop" src={img_file} />
+        <img className="squidTop" src={loading} />
       </div>
       <div className="topRight">
         <p className="header gradient-text">Octopus Game</p>
